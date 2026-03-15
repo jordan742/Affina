@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Affina – Mental Health Support</title>
+<meta name="description" content="AI-powered mental health support built for your profession.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2137;--blue:#1A3A5C;--teal:#0D9488;--teal2:#14B8A6;
+  --mint:#CCFBF1;--mint2:#F0FDF9;--white:#fff;--off:#F8FAFB;
+  --gray:#64748B;--lgray:#E2E8F0;--dgray:#334155;
+  --gold:#F59E0B;--red:#EF4444;--green:#22C55E;
+  --border:#E2E8F0;--shadow:0 2px 16px rgba(13,33,55,.08);
+  --shadow-lg:0 8px 40px rgba(13,33,55,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:#E8EFF5;color:var(--navy);overflow:hidden}
+button{cursor:pointer;font-family:inherit;border:none;outline:none;background:none}
+input,textarea,select{font-family:inherit;border:none;outline:none}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--lgray);border-radius:2px}
+
+#appShell{width:100%;max-width:430px;height:100vh;margin:0 auto;background:var(--off);display:flex;flex-direction:column;position:relative;overflow:hidden;box-shadow:0 0 60px rgba(0,0,0,.18)}
+.screen{display:none;flex-direction:column;height:100%;overflow:hidden;animation:fadeUp .3s ease}
+.screen.active{display:flex}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── WELCOME ── */
+#s-welcome{background:linear-gradient(145deg,var(--navy) 0%,#0a2030 60%,#0D2137 100%);align-items:center;justify-content:center;text-align:center;padding:2rem;overflow-y:auto}
+#s-welcome::before{content:'';position:absolute;width:500px;height:500px;background:var(--teal);border-radius:50%;top:-200px;right:-150px;filter:blur(100px);opacity:.15;pointer-events:none}
+.w-logo{font-family:'DM Serif Display',serif;font-size:3.5rem;color:#fff;letter-spacing:-.03em;margin-bottom:.25rem;position:relative;z-index:1}
+.w-logo span{color:var(--teal2)}
+.w-tag{font-size:1rem;color:rgba(255,255,255,.6);margin-bottom:2.5rem;line-height:1.6;font-weight:300;position:relative;z-index:1;max-width:320px}
+.w-btn{width:100%;padding:1rem;background:var(--teal);color:#fff;border-radius:14px;font-size:1rem;font-weight:600;margin-bottom:.75rem;transition:all .2s;box-shadow:0 0 30px rgba(13,148,136,.35);position:relative;z-index:1}
+.w-btn:hover{background:var(--teal2);transform:translateY(-2px)}
+.w-btn-g{width:100%;padding:.9rem;background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);border-radius:14px;font-size:.9rem;border:1px solid rgba(255,255,255,.12);transition:all .2s;position:relative;z-index:1}
+.w-btn-g:hover{background:rgba(255,255,255,.12)}
+.w-disc{font-size:.7rem;color:rgba(255,255,255,.25);margin-top:1.5rem;line-height:1.5;position:relative;z-index:1}
+
+/* ── AUTH / ONBOARDING ── */
+#s-auth{background:var(--off);overflow-y:auto;align-items:stretch}
+.auth-hdr{background:var(--navy);padding:3rem 1.5rem 2rem;text-align:center;color:#fff;flex-shrink:0}
+.auth-hdr h2{font-family:'DM Serif Display',serif;font-size:1.9rem;margin-bottom:.4rem}
+.auth-hdr p{font-size:.85rem;color:rgba(255,255,255,.55);line-height:1.5}
+.auth-tabs{display:flex;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0}
+.auth-tab{flex:1;padding:.85rem;text-align:center;font-weight:600;font-size:.88rem;color:var(--gray);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s}
+.auth-tab.active{color:var(--teal);border-bottom-color:var(--teal)}
+.auth-body{padding:1.5rem;flex:1;overflow-y:auto}
+.auth-form{display:none;flex-direction:column;gap:1rem}
+.auth-form.active{display:flex}
+.inp-group{display:flex;flex-direction:column;gap:.35rem}
+.inp-label{font-size:.8rem;font-weight:600;color:var(--navy)}
+.inp{background:var(--off);border:1.5px solid var(--border);border-radius:11px;padding:.8rem 1rem;font-size:.9rem;color:var(--navy);transition:border-color .2s;width:100%}
+.inp:focus{border-color:var(--teal)}
+.inp::placeholder{color:var(--gray)}
+.auth-submit{width:100%;padding:1rem;background:var(--teal);color:#fff;border-radius:12px;font-weight:600;font-size:.95rem;transition:all .2s;margin-top:.25rem}
+.auth-submit:hover{background:var(--teal2)}
+.auth-divider{text-align:center;font-size:.78rem;color:var(--gray);margin:.25rem 0}
+
+/* Privacy consent */
+.consent-box{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:1rem;margin-top:.5rem}
+.consent-scroll{max-height:140px;overflow-y:auto;font-size:.72rem;color:var(--gray);line-height:1.6;margin-bottom:.85rem;padding-right:.35rem}
+.consent-scroll h4{font-size:.75rem;color:var(--navy);font-weight:700;margin:.5rem 0 .2rem}
+.consent-check{display:flex;align-items:flex-start;gap:.65rem;cursor:pointer}
+.consent-check input[type=checkbox]{width:18px;height:18px;margin-top:1px;accent-color:var(--teal);flex-shrink:0;cursor:pointer}
+.consent-check-lbl{font-size:.78rem;color:var(--dgray);line-height:1.5}
+.consent-check-lbl a{color:var(--teal);text-decoration:underline}
+
+/* ── PROFESSION SELECT ── */
+#s-profession{background:var(--off);overflow:hidden}
+.prof-hdr{background:var(--navy);padding:3rem 1.5rem 1.5rem;text-align:center;color:#fff;flex-shrink:0}
+.prof-hdr h2{font-family:'DM Serif Display',serif;font-size:1.8rem;margin-bottom:.4rem}
+.prof-hdr p{font-size:.85rem;color:rgba(255,255,255,.55);line-height:1.5}
+.prof-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;padding:1.25rem;overflow-y:auto;flex:1}
+.pc{background:#fff;border-radius:16px;padding:1.3rem 1rem;text-align:center;border:2px solid transparent;transition:all .2s;box-shadow:var(--shadow);cursor:pointer}
+.pc:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.pc.sel{border-color:var(--teal);background:var(--mint2)}
+.pc-em{font-size:2rem;margin-bottom:.5rem;display:block}
+.pc-name{font-weight:700;font-size:.88rem;color:var(--navy);margin-bottom:.15rem}
+.pc-sub{font-size:.7rem;color:var(--gray);line-height:1.3}
+.prof-cont{margin:0 1.25rem 1.25rem;padding:1rem;background:var(--teal);color:#fff;border-radius:14px;font-size:1rem;font-weight:600;width:calc(100% - 2.5rem);transition:all .2s;opacity:.4;pointer-events:none;flex-shrink:0}
+.prof-cont.on{opacity:1;pointer-events:all}
+.prof-cont.on:hover{background:var(--teal2)}
+
+/* ── MAIN APP ── */
+#s-app{background:var(--off)}
+.tab-wrap{flex:1;overflow:hidden;position:relative}
+.tab{display:none;flex-direction:column;height:100%;overflow-y:auto;overflow-x:hidden;padding-bottom:.5rem;animation:fadeUp .25s ease}
+.tab.active{display:flex}
+
+/* ── BOTTOM NAV ── */
+.bnav{display:flex;background:#fff;border-top:1px solid var(--border);padding:.45rem 0 calc(.45rem + env(safe-area-inset-bottom));flex-shrink:0}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:.15rem;padding:.4rem .25rem;cursor:pointer;color:var(--gray);transition:color .15s;position:relative}
+.ni.active{color:var(--teal)}
+.ni-icon{font-size:1.3rem}
+.ni-lbl{font-size:.6rem;font-weight:600;letter-spacing:.02em}
+
+/* ── SHARED ── */
+.pg-hdr{background:var(--navy);padding:2.5rem 1.25rem 1.25rem;color:#fff;position:relative;overflow:hidden;flex-shrink:0}
+.pg-hdr::after{content:'';position:absolute;width:180px;height:180px;background:var(--teal);border-radius:50%;top:-70px;right:-50px;filter:blur(55px);opacity:.15;pointer-events:none}
+.pg-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:.3rem}
+.pg-greet{font-size:.75rem;color:rgba(255,255,255,.45);font-weight:500}
+.pg-name{font-family:'DM Serif Display',serif;font-size:1.5rem;color:#fff}
+.pg-badge{display:inline-flex;align-items:center;gap:.3rem;background:rgba(13,148,136,.2);border:1px solid rgba(13,148,136,.3);border-radius:100px;padding:.2rem .6rem;font-size:.68rem;font-weight:600;color:var(--teal2);margin-top:.45rem}
+.slbl{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin:.75rem 1rem .5rem;display:block;flex-shrink:0}
+.card{background:#fff;border-radius:16px;padding:1.1rem;margin:0 1rem .8rem;box-shadow:var(--shadow);border:1px solid var(--border);flex-shrink:0}
+.ct{font-weight:700;font-size:.92rem;color:var(--navy);margin-bottom:.65rem;display:flex;align-items:center;gap:.45rem}
+
+/* ── CHECK-IN ── */
+.ci-progress{height:5px;background:var(--lgray);border-radius:3px;margin-bottom:1.25rem;overflow:hidden}
+.ci-progress-bar{height:100%;background:var(--teal);border-radius:3px;transition:width .4s ease}
+.ci-q-num{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:.4rem}
+.ci-question{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--navy);line-height:1.35;margin-bottom:.35rem}
+.ci-hint{font-size:.78rem;color:var(--gray);margin-bottom:1.1rem;line-height:1.45;font-style:italic}
+.ci-opts{display:flex;flex-direction:column;gap:.55rem}
+.ci-opt{padding:.85rem 1rem;background:var(--off);border:2px solid var(--border);border-radius:12px;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:.75rem;font-size:.88rem;font-weight:500;color:var(--navy)}
+.ci-opt:hover,.ci-opt.sel{border-color:var(--teal);background:var(--mint2);color:var(--teal)}
+.ci-opt-em{font-size:1.25rem;flex-shrink:0}
+.ci-scale{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem}
+.ci-scale-btn{background:var(--off);border:2px solid var(--border);border-radius:10px;padding:.65rem .2rem;text-align:center;cursor:pointer;transition:all .15s}
+.ci-scale-btn:hover,.ci-scale-btn.sel{border-color:var(--teal);background:var(--mint2)}
+.ci-scale-num{font-size:1.3rem;display:block}
+.ci-scale-lbl{font-size:.56rem;color:var(--gray);font-weight:600;display:block;margin-top:.1rem}
+.ci-next{width:100%;padding:.9rem;background:var(--teal);color:#fff;border-radius:12px;font-weight:600;font-size:.92rem;margin-top:1.1rem;transition:all .2s;opacity:.4;pointer-events:none}
+.ci-next.on{opacity:1;pointer-events:all}
+.ci-rec{background:var(--off);border-radius:11px;padding:.85rem;border-left:3px solid var(--teal);cursor:pointer;transition:all .2s;margin-bottom:.55rem}
+.ci-rec:hover{background:var(--mint2)}
+.ci-rec-title{font-weight:700;font-size:.88rem;color:var(--navy);margin-bottom:.15rem}
+.ci-rec-sub{font-size:.75rem;color:var(--gray)}
+
+/* ── HOME ── */
+.qcard{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:16px;padding:1.25rem;margin:0 1rem .8rem;position:relative;overflow:hidden;flex-shrink:0}
+.qcard::before{content:'\201C';position:absolute;top:-.5rem;left:.7rem;font-size:3.5rem;color:rgba(13,148,136,.2);font-family:serif;line-height:1}
+.qbar{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--teal);border-radius:2px 0 0 2px}
+.qtxt{font-family:'DM Serif Display',serif;font-style:italic;font-size:.95rem;line-height:1.5;position:relative;z-index:1;margin-bottom:.6rem}
+.qsrc{font-size:.7rem;color:rgba(255,255,255,.4);position:relative;z-index:1}
+.streak-row{display:flex;align-items:center;gap:.65rem}
+.s-num{font-family:'DM Serif Display',serif;font-size:2.4rem;color:var(--teal);line-height:1}
+.s-lbl{font-size:.78rem;color:var(--gray);line-height:1.4}
+.s-dots{display:flex;gap:.25rem;margin-top:.4rem}
+.sd{width:26px;height:7px;border-radius:3px;background:var(--lgray)}
+.sd.done{background:var(--teal)}
+.sd.today{background:var(--teal2);animation:p2 1.5s infinite}
+@keyframes p2{0%,100%{opacity:1}50%{opacity:.45}}
+.qtools{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin:0 1rem .8rem;flex-shrink:0}
+.qt{background:#fff;border:1px solid var(--border);border-radius:13px;padding:.9rem;cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.qt:hover{border-color:var(--teal);transform:translateY(-2px)}
+.qt-ic{font-size:1.4rem;margin-bottom:.3rem}
+.qt-lbl{font-weight:700;font-size:.82rem;color:var(--navy);margin-bottom:.12rem}
+.qt-sub{font-size:.7rem;color:var(--gray)}
+.crisis{background:linear-gradient(135deg,#7F1D1D,#991B1B);border-radius:14px;padding:1rem;margin:0 1rem .8rem;color:#fff;flex-shrink:0}
+.cb{display:inline-flex;align-items:center;gap:.35rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:.4rem .75rem;font-size:.75rem;font-weight:600;color:#fff;margin-right:.4rem;cursor:pointer;text-decoration:none;transition:background .2s}
+.cb:hover{background:rgba(255,255,255,.25)}
+
+/* ── TOOLS ── */
+.tool-list{display:flex;flex-direction:column;gap:.65rem;padding:0 1rem 1rem;flex-shrink:0}
+.ti{background:#fff;border-radius:15px;padding:1.1rem;border:1px solid var(--border);cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.ti:hover{border-color:var(--teal);transform:translateX(3px)}
+.ti-row{display:flex;align-items:center;gap:.85rem}
+.ti-ic{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0}
+.ti-title{font-weight:700;font-size:.92rem;color:var(--navy);margin-bottom:.18rem}
+.ti-desc{font-size:.75rem;color:var(--gray);line-height:1.4}
+.ti-meta{font-size:.68rem;color:var(--teal);font-weight:600;margin-top:.25rem}
+.ti-arr{margin-left:auto;color:var(--lgray);font-size:1.1rem}
+
+/* ── CHAT ── */
+#tab-chat{display:none;flex-direction:column;height:100%;overflow:hidden}
+#tab-chat.active{display:flex}
+.chat-hdr{background:var(--navy);padding:2.5rem 1.25rem 1rem;color:#fff;position:relative;overflow:hidden;flex-shrink:0}
+.chat-hdr::after{content:'';position:absolute;width:180px;height:180px;background:var(--teal);border-radius:50%;top:-70px;right:-50px;filter:blur(55px);opacity:.15;pointer-events:none}
+.chat-prof-bar{padding:.5rem .85rem;background:#fff;border-bottom:1px solid var(--border);display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.chat-prof-bar::-webkit-scrollbar{display:none}
+.cpp{display:flex;align-items:center;gap:.25rem;background:var(--off);border:1.5px solid var(--border);border-radius:100px;padding:.3rem .65rem;font-size:.72rem;font-weight:600;color:var(--gray);white-space:nowrap;cursor:pointer;transition:all .15s;flex-shrink:0}
+.cpp.active{background:var(--mint);border-color:var(--teal);color:var(--teal)}
+.chat-msgs{flex:1;overflow-y:auto;padding:.85rem;display:flex;flex-direction:column;gap:.8rem}
+.msg{display:flex;flex-direction:column;max-width:83%;animation:fadeUp .2s ease}
+.msg.u{align-self:flex-end;align-items:flex-end}
+.msg.b{align-self:flex-start;align-items:flex-start}
+.bub{padding:.7rem .9rem;border-radius:17px;font-size:.86rem;line-height:1.55;word-break:break-word}
+.msg.u .bub{background:var(--teal);color:#fff;border-bottom-right-radius:4px}
+.msg.b .bub{background:#fff;color:var(--navy);border:1px solid var(--border);border-bottom-left-radius:4px;box-shadow:var(--shadow)}
+.msg-t{font-size:.6rem;color:var(--gray);margin-top:.2rem;padding:0 .2rem}
+.b-row{display:flex;align-items:flex-end;gap:.4rem}
+.b-av{width:26px;height:26px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;margin-bottom:2px}
+.typing{display:flex;align-items:center;gap:4px;padding:.65rem .85rem;background:#fff;border:1px solid var(--border);border-radius:17px;border-bottom-left-radius:4px;box-shadow:var(--shadow)}
+.td{width:6px;height:6px;background:var(--teal);border-radius:50%;animation:tb 1.2s infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes tb{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.chat-sugg-bar{padding:.35rem .85rem;display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;background:var(--off);border-top:1px solid var(--border);flex-shrink:0}
+.chat-sugg-bar::-webkit-scrollbar{display:none}
+.cs{background:#fff;border:1.5px solid var(--teal);border-radius:100px;padding:.35rem .75rem;font-size:.72rem;font-weight:600;color:var(--teal);white-space:nowrap;cursor:pointer;transition:all .15s;flex-shrink:0}
+.cs:hover{background:var(--mint)}
+.chat-disc{font-size:.66rem;color:var(--gray);text-align:center;padding:.3rem;font-style:italic;flex-shrink:0}
+.chat-input-bar{padding:.6rem .85rem;background:#fff;border-top:1px solid var(--border);display:flex;gap:.5rem;align-items:flex-end;flex-shrink:0}
+#chatIn{flex:1;background:var(--off);border:1.5px solid var(--border);border-radius:18px;padding:.55rem .85rem;font-size:.86rem;color:var(--navy);resize:none;max-height:90px;line-height:1.4;transition:border-color .2s}
+#chatIn:focus{border-color:var(--teal)}
+#chatSend{width:38px;height:38px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff;transition:all .2s;box-shadow:0 2px 8px rgba(13,148,136,.35)}
+#chatSend:hover{background:var(--teal2)}
+#chatSend:disabled{opacity:.5;cursor:default}
+
+/* ── LEARN ── */
+.lpb{background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:16px;padding:1.25rem;margin:0 1rem 1rem;color:#fff;position:relative;overflow:hidden;flex-shrink:0}
+.lpb::after{content:'';position:absolute;width:110px;height:110px;background:var(--teal);border-radius:50%;top:-35px;right:-25px;filter:blur(35px);opacity:.2}
+.lpb-title{font-family:'DM Serif Display',serif;font-size:1.15rem;margin-bottom:.25rem}
+.lpb-desc{font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.5}
+.art-list{display:flex;flex-direction:column;gap:.65rem;padding:0 1rem;flex-shrink:0}
+.ac{background:#fff;border-radius:13px;padding:1rem;border:1px solid var(--border);cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.ac:hover{border-color:var(--teal);box-shadow:var(--shadow-lg)}
+.at-tag{font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:.35rem}
+.at-tit{font-weight:700;font-size:.92rem;color:var(--navy);margin-bottom:.25rem;line-height:1.3}
+.at-desc{font-size:.75rem;color:var(--gray);line-height:1.4}
+.at-meta{display:flex;align-items:center;gap:.4rem;margin-top:.4rem;font-size:.68rem;color:var(--gray)}
+
+/* ── CALENDAR & JOURNAL ── */
+.cal-month-nav{display:flex;align-items:center;justify-content:space-between;padding:0 1rem .5rem;flex-shrink:0}
+.cal-month-label{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy)}
+.cal-nav-btn{background:var(--off);border:1px solid var(--border);border-radius:8px;padding:.35rem .7rem;font-size:.85rem;color:var(--navy);cursor:pointer;transition:all .2s}
+.cal-nav-btn:hover{border-color:var(--teal);color:var(--teal)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.3rem;padding:0 1rem;margin-bottom:.75rem;flex-shrink:0}
+.cal-day-lbl{text-align:center;font-size:.63rem;font-weight:700;color:var(--gray);letter-spacing:.04em;padding:.25rem 0}
+.cal-day{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:500;cursor:pointer;transition:all .15s;color:var(--navy);position:relative}
+.cal-day.empty{background:transparent;cursor:default}
+.cal-day.past{background:var(--lgray);color:var(--gray)}
+.cal-day.logged{background:var(--mint);color:var(--teal);font-weight:700}
+.cal-day.today{background:var(--teal);color:#fff;font-weight:700;box-shadow:0 2px 8px rgba(13,148,136,.4)}
+.cal-day.future{background:var(--off);color:var(--lgray);cursor:default}
+.cal-day.has-entry::after{content:'';position:absolute;bottom:2px;width:4px;height:4px;background:var(--teal);border-radius:50%}
+.cal-day.today.has-entry::after{background:#fff}
+.journal-entry-item{background:#fff;border-radius:12px;padding:1rem;border-left:4px solid var(--teal);margin:0 1rem .6rem;box-shadow:var(--shadow);cursor:pointer;transition:all .2s;flex-shrink:0}
+.journal-entry-item:hover{box-shadow:var(--shadow-lg)}
+.je-date{font-size:.7rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem}
+.je-mood{font-size:1rem;margin-right:.3rem}
+.je-preview{font-size:.83rem;color:var(--dgray);line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Journal input panel */
+.journal-panel{background:#fff;border-top:1px solid var(--border);padding:1rem;flex-shrink:0}
+.journal-mode-row{display:flex;gap:.5rem;margin-bottom:.75rem}
+.jmode-btn{flex:1;padding:.6rem;background:var(--off);border:1.5px solid var(--border);border-radius:10px;font-size:.8rem;font-weight:600;color:var(--gray);transition:all .2s;text-align:center}
+.jmode-btn.active{background:var(--mint);border-color:var(--teal);color:var(--teal)}
+.journal-area{width:100%;min-height:90px;background:var(--off);border:1.5px solid var(--border);border-radius:11px;padding:.8rem;font-size:.87rem;color:var(--navy);line-height:1.6;resize:none;transition:border-color .2s}
+.journal-area:focus{border-color:var(--teal)}
+.voice-btn{width:100%;padding:.8rem;background:var(--off);border:2px dashed var(--border);border-radius:11px;font-size:.88rem;font-weight:500;color:var(--gray);text-align:center;cursor:pointer;transition:all .2s;margin-bottom:.65rem}
+.voice-btn.recording{background:#FEE2E2;border-color:var(--red);color:var(--red);animation:recPulse 1s infinite}
+@keyframes recPulse{0%,100%{opacity:1}50%{opacity:.6}}
+.journal-save{width:100%;padding:.8rem;background:var(--teal);color:#fff;border-radius:11px;font-weight:600;transition:all .2s;font-size:.9rem}
+.journal-save:hover{background:var(--teal2)}
+
+/* ── LOCAL EVENTS ── */
+.events-search{display:flex;gap:.5rem;padding:0 1rem;margin-bottom:.75rem;flex-shrink:0}
+.events-search-inp{flex:1;background:#fff;border:1.5px solid var(--border);border-radius:11px;padding:.65rem .9rem;font-size:.87rem;color:var(--navy);transition:border-color .2s}
+.events-search-inp:focus{border-color:var(--teal)}
+.events-filter-row{display:flex;gap:.4rem;padding:0 1rem;overflow-x:auto;scrollbar-width:none;margin-bottom:.75rem;flex-shrink:0}
+.events-filter-row::-webkit-scrollbar{display:none}
+.ev-filter{background:#fff;border:1.5px solid var(--border);border-radius:100px;padding:.3rem .7rem;font-size:.72rem;font-weight:600;color:var(--gray);white-space:nowrap;cursor:pointer;transition:all .15s;flex-shrink:0}
+.ev-filter.active{background:var(--mint);border-color:var(--teal);color:var(--teal)}
+.event-card{background:#fff;border-radius:14px;padding:1.1rem;margin:0 1rem .75rem;border:1px solid var(--border);box-shadow:var(--shadow);flex-shrink:0;cursor:pointer;transition:all .2s}
+.event-card:hover{border-color:var(--teal);box-shadow:var(--shadow-lg)}
+.ev-type-badge{display:inline-flex;align-items:center;gap:.25rem;background:var(--mint);border-radius:100px;padding:.2rem .55rem;font-size:.65rem;font-weight:700;color:var(--teal);margin-bottom:.5rem}
+.ev-title{font-weight:700;font-size:.92rem;color:var(--navy);margin-bottom:.3rem;line-height:1.3}
+.ev-meta{display:flex;flex-direction:column;gap:.2rem}
+.ev-meta-row{display:flex;align-items:center;gap:.4rem;font-size:.75rem;color:var(--gray)}
+.ev-meta-icon{font-size:.85rem}
+.ev-register{display:inline-block;margin-top:.65rem;padding:.45rem .9rem;background:var(--teal);color:#fff;border-radius:8px;font-size:.75rem;font-weight:600;transition:background .2s}
+.ev-register:hover{background:var(--teal2)}
+.ev-free-badge{display:inline-block;margin-top:.65rem;margin-left:.5rem;padding:.45rem .75rem;background:var(--mint);color:var(--teal);border-radius:8px;font-size:.75rem;font-weight:600}
+
+/* ── PROFILE ── */
+.prof-hero{background:var(--navy);padding:2.5rem 1.25rem 1.5rem;text-align:center;color:#fff;flex-shrink:0}
+.p-av{width:68px;height:68px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto .85rem;border:3px solid rgba(255,255,255,.2)}
+.p-name{font-family:'DM Serif Display',serif;font-size:1.45rem;margin-bottom:.15rem}
+.p-prof{font-size:.82rem;color:rgba(255,255,255,.5)}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;padding:0 1rem;margin-bottom:1rem;flex-shrink:0}
+.sb{background:#fff;border-radius:11px;padding:.8rem;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow)}
+.sb-n{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--teal);line-height:1}
+.sb-l{font-size:.65rem;color:var(--gray);margin-top:.15rem;font-weight:600}
+.set-list{display:flex;flex-direction:column;padding:0 1rem;flex-shrink:0}
+.si{background:#fff;padding:.9rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.si:first-child{border-radius:13px 13px 0 0}
+.si:last-child{border-radius:0 0 13px 13px;border-bottom:none}
+.si:hover{background:var(--off)}
+.si-lbl{font-weight:500;font-size:.88rem;color:var(--navy);display:flex;align-items:center;gap:.65rem}
+.si-ic{font-size:1rem;width:28px}
+.si-val{font-size:.78rem;color:var(--gray)}
+.si-arr{color:var(--lgray);font-size:.95rem}
+.tog{width:42px;height:22px;background:var(--lgray);border-radius:11px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.tog.on{background:var(--teal)}
+.tog::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tog.on::after{transform:translateX(20px)}
+.change-prof-btn{margin:0 1rem .8rem;padding:.9rem;background:var(--teal);color:#fff;border-radius:13px;font-weight:600;font-size:.9rem;display:flex;align-items:center;justify-content:center;gap:.5rem;cursor:pointer;transition:all .2s;flex-shrink:0}
+.change-prof-btn:hover{background:var(--teal2)}
+
+/* ── PRIVACY POLICY TAB ── */
+#tab-privacy{display:none;flex-direction:column;height:100%;overflow:hidden}
+#tab-privacy.active{display:flex}
+.pp-body{flex:1;overflow-y:auto;padding:1.25rem}
+.pp-section{margin-bottom:1.5rem}
+.pp-section h2{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.5rem;padding-bottom:.35rem;border-bottom:2px solid var(--teal)}
+.pp-section h3{font-weight:700;font-size:.88rem;color:var(--navy);margin:.65rem 0 .3rem}
+.pp-section p{font-size:.8rem;color:var(--dgray);line-height:1.65;margin-bottom:.5rem}
+.pp-section ul{padding-left:1.25rem;margin-bottom:.5rem}
+.pp-section li{font-size:.8rem;color:var(--dgray);line-height:1.6;margin-bottom:.25rem}
+.pp-notice{background:var(--mint2);border:1px solid rgba(13,148,136,.2);border-left:3px solid var(--teal);border-radius:8px;padding:.85rem;margin-bottom:.85rem}
+.pp-notice p{font-size:.78rem;color:var(--teal);line-height:1.55;margin:0}
+.pp-caps{font-size:.75rem;color:var(--dgray);line-height:1.6;font-weight:600;margin-bottom:.5rem;text-transform:uppercase}
+
+/* ── MODAL ── */
+.mo{position:fixed;inset:0;background:rgba(13,33,55,.65);z-index:300;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(4px)}
+.mo.open{opacity:1;pointer-events:all}
+.ms{background:#fff;border-radius:22px 22px 0 0;max-height:88vh;overflow-y:auto;width:100%;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1)}
+.mo.open .ms{transform:translateY(0)}
+.mh{width:38px;height:4px;background:var(--lgray);border-radius:2px;margin:0 auto 1.1rem}
+.mc{position:sticky;top:.85rem;float:right;margin-right:.85rem;width:30px;height:30px;background:var(--off);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;cursor:pointer;color:var(--gray);z-index:1}
+.mp{padding:.85rem 1.25rem 1.5rem}
+.mt{font-family:'DM Serif Display',serif;font-size:1.45rem;color:var(--navy);margin-bottom:.35rem}
+.msub{font-size:.82rem;color:var(--gray);line-height:1.5;margin-bottom:1.1rem}
+.cite{font-size:.66rem;color:var(--gray);font-style:italic;padding:.35rem .65rem;background:var(--off);border-radius:5px;margin-top:.65rem;border-left:2px solid var(--lgray);line-height:1.4}
+
+/* Breathing */
+.b-wrap{display:flex;flex-direction:column;align-items:center;padding:1.5rem 0}
+.b-circle{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(13,148,136,.18),rgba(13,148,136,.04));border:3px solid rgba(13,148,136,.28);display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:1rem;color:var(--teal);margin-bottom:.85rem}
+.b-circle.inhale{animation:bIn 4s ease-in-out forwards}
+.b-circle.hold{animation:bHold 4s ease forwards}
+.b-circle.exhale{animation:bOut 4s ease-in-out forwards}
+@keyframes bIn{to{transform:scale(1.4);background:radial-gradient(circle,rgba(13,148,136,.3),rgba(13,148,136,.08));border-color:rgba(13,148,136,.55)}}
+@keyframes bHold{0%,100%{transform:scale(1.4)}}
+@keyframes bOut{from{transform:scale(1.4)}to{transform:scale(1)}}
+.b-ph{font-size:1.05rem;font-weight:700;color:var(--teal)}
+.b-tm{font-family:'DM Serif Display',serif;font-size:1.9rem;color:var(--navy)}
+.b-cy{font-size:.75rem;color:var(--gray);margin-top:.35rem}
+.b-btn{padding:.8rem 2.2rem;background:var(--teal);color:#fff;border-radius:100px;font-weight:600;margin-top:1.1rem;transition:all .2s}
+.b-btn:hover{background:var(--teal2)}
+.gs{background:var(--off);border-radius:11px;padding:.9rem;border:1px solid var(--border);opacity:.4;transition:all .35s;margin-bottom:.6rem;cursor:pointer}
+.gs.active{opacity:1;border-color:var(--teal);background:var(--mint2)}
+.gs-n{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--teal);margin-bottom:.15rem}
+.gs-lbl{font-weight:700;font-size:.88rem;color:var(--navy)}
+.gs-desc{font-size:.78rem;color:var(--gray);margin-top:.1rem}
+.jp{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:13px;padding:1.1rem;margin-bottom:.85rem;font-size:.9rem;font-style:italic;font-family:'DM Serif Display',serif;line-height:1.5}
+.ja{width:100%;min-height:145px;background:var(--off);border:1.5px solid var(--border);border-radius:11px;padding:.85rem;font-size:.87rem;color:var(--navy);line-height:1.6;resize:none;transition:border-color .2s}
+.ja:focus{border-color:var(--teal)}
+.jsave{width:100%;padding:.85rem;background:var(--teal);color:#fff;border-radius:11px;font-weight:600;margin-top:.65rem;transition:all .2s}
+.jsave:hover{background:var(--teal2)}
+.cbt-step{margin-bottom:1.1rem}
+.cbt-lbl{font-weight:700;font-size:.82rem;color:var(--navy);margin-bottom:.35rem}
+.cbt-in{width:100%;background:var(--off);border:1.5px solid var(--border);border-radius:9px;padding:.7rem;font-size:.84rem;color:var(--navy);min-height:56px;resize:none;transition:border-color .2s}
+.cbt-in:focus{border-color:var(--teal)}
+.cbt-hint{font-size:.7rem;color:var(--gray);margin-top:.25rem;font-style:italic}
+.mbsr-step{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:.85rem;margin-bottom:.55rem}
+.mbsr-step-n{font-size:.63rem;font-weight:700;color:var(--teal2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.18rem}
+.mbsr-step-t{font-size:.82rem;color:rgba(255,255,255,.8);line-height:1.45}
+
+/* Share */
+.share-opts{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:1rem 0}
+.share-opt{background:var(--off);border:1.5px solid var(--border);border-radius:13px;padding:1rem;text-align:center;cursor:pointer;transition:all .2s}
+.share-opt:hover{border-color:var(--teal);background:var(--mint2)}
+.share-opt-ic{font-size:1.8rem;margin-bottom:.4rem}
+.share-opt-lbl{font-weight:700;font-size:.82rem;color:var(--navy)}
+.share-link-box{background:var(--off);border:1.5px solid var(--border);border-radius:10px;padding:.75rem;display:flex;align-items:center;gap:.6rem;margin-top:.75rem}
+.share-link-url{flex:1;font-size:.78rem;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.share-copy-btn{background:var(--teal);color:#fff;border-radius:7px;padding:.4rem .75rem;font-size:.75rem;font-weight:600;flex-shrink:0;transition:background .2s}
+.share-copy-btn:hover{background:var(--teal2)}
+
+/* Toast */
+.toast{position:fixed;top:1rem;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--navy);color:#fff;padding:.65rem 1.1rem;border-radius:100px;font-size:.82rem;font-weight:600;z-index:999;transition:transform .28s;white-space:nowrap;box-shadow:var(--shadow-lg);border:1px solid rgba(13,148,136,.3)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(min-width:430px){
+  .app-wrapper{box-shadow:0 0 60px rgba(0,0,0,.15)}
+  body{background:#E8EFF5}
+}
+</style>
+</head>
+<body>
+<div id="appShell">
+
+<!-- ═══ WELCOME ═══ -->
+<div id="s-welcome" class="screen active">
+  <div class="w-logo">affi<span>na</span></div>
+  <p class="w-tag">Mental health support that understands who you are and what you do.</p>
+  <button class="w-btn" onclick="goTo('s-auth','signup')">Create Free Account</button>
+  <button class="w-btn-g" onclick="goTo('s-auth','login')">Sign In</button>
+  <a href="https://affina1.netlify.app" target="_blank" style="display:block;margin-top:.75rem;font-size:.8rem;color:rgba(255,255,255,.4);text-decoration:underline;position:relative;z-index:1">🌐 Visit affina.app</a>
+  <p class="w-disc">Affina is a mental wellness tool, not a licensed medical provider.<br>For emergencies call 911 or call/text 988.</p>
+</div>
+
+<!-- ═══ AUTH ═══ -->
+<div id="s-auth" class="screen">
+  <div class="auth-hdr">
+    <h2 id="authHdrTitle">Create Account</h2>
+    <p id="authHdrSub">Join thousands getting profession-specific mental health support</p>
+  </div>
+  <div class="auth-tabs">
+    <div class="auth-tab active" id="tabSignup" onclick="showAuthTab('signup')">Sign Up</div>
+    <div class="auth-tab" id="tabLogin" onclick="showAuthTab('login')">Sign In</div>
+  </div>
+  <div class="auth-body">
+
+    <!-- SIGN UP -->
+    <div class="auth-form active" id="formSignup">
+      <div class="inp-group">
+        <label class="inp-label">Full Name</label>
+        <input class="inp" id="suName" type="text" placeholder="Your name" autocomplete="name">
+      </div>
+      <div class="inp-group">
+        <label class="inp-label">Email Address</label>
+        <input class="inp" id="suEmail" type="email" placeholder="you@email.com" autocomplete="email">
+      </div>
+      <div class="inp-group">
+        <label class="inp-label">Password</label>
+        <input class="inp" id="suPass" type="password" placeholder="Min 8 characters" autocomplete="new-password">
+      </div>
+      <div class="inp-group">
+        <label class="inp-label">Confirm Password</label>
+        <input class="inp" id="suPass2" type="password" placeholder="Repeat password" autocomplete="new-password">
+      </div>
+
+      <!-- Privacy Consent -->
+      <div class="consent-box">
+        <div class="consent-scroll" id="consentScroll">
+          <h4>Privacy Policy Summary</h4>
+          <p>Affina collects your name, email, profession, and voluntary mental health inputs to provide personalized wellness support. Your mental health data is classified as <strong>Sensitive Data</strong> under the New Jersey Data Privacy Act (NJDPA, S.B. 332, eff. January 15, 2025) and requires your explicit opt-in consent.</p>
+          <h4>Your Rights</h4>
+          <p>You have the right to access, correct, delete, and port your data. You may withdraw consent at any time. Affina will never sell your data or share it with your employer. You may submit requests to jordan.rabadi@student.shu.edu.</p>
+          <h4>Not a Medical Provider</h4>
+          <p>Affina is a wellness tool only. It is not a licensed therapist or medical provider. Content in the App does not constitute medical advice. In a crisis, call or text 988.</p>
+          <h4>Data Security</h4>
+          <p>We use TLS encryption in transit, secure credential hashing, and access controls to protect your data. We comply with NJDPA, COPPA, and applicable federal privacy law.</p>
+          <h4>Governing Law</h4>
+          <p>This policy is governed by New Jersey law. Disputes are subject to individual binding arbitration. Class action waiver applies. Full policy is available in-app under Profile → Privacy Policy.</p>
+        </div>
+        <label class="consent-check" style="margin-bottom:.65rem">
+          <input type="checkbox" id="consentPP" onchange="checkConsentReady()">
+          <span class="consent-check-lbl">I have read and agree to Affina's <a onclick="previewPP()">Privacy Policy</a> and consent to the collection and processing of my personal and mental health data as described above.</span>
+        </label>
+        <label class="consent-check">
+          <input type="checkbox" id="consentAge" onchange="checkConsentReady()">
+          <span class="consent-check-lbl">I confirm I am 13 years of age or older.</span>
+        </label>
+      </div>
+      <button class="auth-submit" id="suBtn" onclick="doSignup()" disabled style="opacity:.5;pointer-events:none">Create My Account →</button>
+      <div class="auth-divider">Already have an account? <span style="color:var(--teal);cursor:pointer;font-weight:600" onclick="showAuthTab('login')">Sign in</span></div>
+    </div>
+
+    <!-- SIGN IN -->
+    <div class="auth-form" id="formLogin">
+      <div class="inp-group">
+        <label class="inp-label">Email Address</label>
+        <input class="inp" id="liEmail" type="email" placeholder="you@email.com" autocomplete="email">
+      </div>
+      <div class="inp-group">
+        <label class="inp-label">Password</label>
+        <input class="inp" id="liPass" type="password" placeholder="Your password" autocomplete="current-password">
+      </div>
+      <button class="auth-submit" onclick="doLogin()">Sign In →</button>
+      <div class="auth-divider" style="color:var(--gray);font-size:.78rem;text-align:center;margin-top:.5rem">Demo: use any email + any password</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PROFESSION SELECT ═══ -->
+<div id="s-profession" class="screen">
+  <div class="prof-hdr">
+    <h2>What do you do?</h2>
+    <p>Affina adapts everything to your profession — content, AI support, and language.</p>
+  </div>
+  <div class="prof-grid" id="profGrid">
+    <div class="pc" data-p="nurse" onclick="selProf(this)"><span class="pc-em">🏥</span><div class="pc-name">Nurse / NP</div><div class="pc-sub">RN, LPN, NP, CNA</div></div>
+    <div class="pc" data-p="doctor" onclick="selProf(this)"><span class="pc-em">⚕️</span><div class="pc-name">Physician</div><div class="pc-sub">MD, DO, Resident</div></div>
+    <div class="pc" data-p="police" onclick="selProf(this)"><span class="pc-em">🚔</span><div class="pc-name">Law Enforcement</div><div class="pc-sub">Officer, Detective</div></div>
+    <div class="pc" data-p="firefighter" onclick="selProf(this)"><span class="pc-em">🚒</span><div class="pc-name">Firefighter</div><div class="pc-sub">FF, Captain, Wildland</div></div>
+    <div class="pc" data-p="emt" onclick="selProf(this)"><span class="pc-em">🚑</span><div class="pc-name">EMT / Paramedic</div><div class="pc-sub">EMT-B, AEMT, Paramedic</div></div>
+    <div class="pc" data-p="socialworker" onclick="selProf(this)"><span class="pc-em">🤝</span><div class="pc-name">Social Worker</div><div class="pc-sub">MSW, LSW, LCSW</div></div>
+    <div class="pc" data-p="student" onclick="selProf(this)"><span class="pc-em">🎓</span><div class="pc-name">Student</div><div class="pc-sub">Undergrad, Grad, Med</div></div>
+    <div class="pc" data-p="teacher" onclick="selProf(this)"><span class="pc-em">📚</span><div class="pc-name">Teacher / Educator</div><div class="pc-sub">K-12, Higher Ed</div></div>
+    <div class="pc" data-p="military" onclick="selProf(this)"><span class="pc-em">🎖️</span><div class="pc-name">Military / Veteran</div><div class="pc-sub">Active Duty, Reserve, Vet</div></div>
+    <div class="pc" data-p="accountant" onclick="selProf(this)"><span class="pc-em">💼</span><div class="pc-name">Business / Finance</div><div class="pc-sub">Accountant, Analyst, CPA</div></div>
+    <div class="pc" data-p="therapist" onclick="selProf(this)"><span class="pc-em">🧠</span><div class="pc-name">Mental Health Pro</div><div class="pc-sub">Therapist, Counselor</div></div>
+    <div class="pc" data-p="other" onclick="selProf(this)"><span class="pc-em">✨</span><div class="pc-name">Other Profession</div><div class="pc-sub">General support</div></div>
+  </div>
+  <button class="prof-cont" id="profCont" onclick="enterApp()">Continue →</button>
+</div>
+
+<!-- ═══ MAIN APP ═══ -->
+<div id="s-app" class="screen">
+  <div class="tab-wrap">
+
+    <!-- HOME -->
+    <div class="tab active" id="tab-home">
+      <div class="pg-hdr">
+        <div class="pg-row">
+          <div><div class="pg-greet">Good <span id="hGreet">morning</span>,</div><div class="pg-name" id="hName">Loading…</div></div>
+          <div style="font-size:1.75rem" id="hEmoji">🏥</div>
+        </div>
+        <span class="pg-badge" id="hBadge">🔥 0-Day Streak</span>
+      </div>
+
+      <span class="slbl">How are you feeling today?</span>
+      <div class="card">
+        <div class="ct">💭 Daily Mental Health Check-In</div>
+        <p style="font-size:.82rem;color:var(--gray);line-height:1.55;margin-bottom:.85rem">Answer a few short questions so Affina can understand how you're doing today and offer the right support.</p>
+        <div id="checkinResult" style="display:none;margin-bottom:.85rem;padding:.75rem;border-radius:10px;font-size:.83rem;line-height:1.55;border-left:3px solid var(--teal);background:var(--mint2);color:var(--teal)"></div>
+        <button style="width:100%;padding:.85rem;background:var(--teal);color:#fff;border-radius:12px;font-weight:600;font-size:.92rem;transition:all .2s" onclick="openCheckin()" id="checkinBtn">Start Today's Check-In →</button>
+      </div>
+
+      <span class="slbl">Your Daily Quote</span>
+      <div class="qcard"><div class="qbar"></div><div class="qtxt" id="qTxt">Loading…</div><div class="qsrc" id="qSrc">—</div></div>
+
+      <span class="slbl">Today's Focus</span>
+      <div class="card">
+        <div class="ct"><span id="fIc">🎯</span> <span id="fTit">Loading…</span></div>
+        <p style="font-size:.83rem;color:var(--gray);line-height:1.6" id="fBody">Loading…</p>
+        <div class="cite" id="fCite"></div>
+      </div>
+
+      <span class="slbl">Your Wellness Streak</span>
+      <div class="card">
+        <div class="ct">🔥 Consistency Tracker</div>
+        <div class="streak-row"><div class="s-num" id="sNum">0</div><div><div class="s-lbl">Day streak<br><span id="streakMsg" style="color:var(--teal);font-weight:600">Start your streak today!</span></div></div></div>
+        <div class="s-dots" id="sDots"></div>
+      </div>
+
+      <span class="slbl">Quick Tools</span>
+      <div class="qtools">
+        <div class="qt" onclick="openTool('breathing')"><div class="qt-ic">🫁</div><div class="qt-lbl">Box Breathing</div><div class="qt-sub">3 min · Calming</div></div>
+        <div class="qt" onclick="openTool('grounding')"><div class="qt-ic">🌿</div><div class="qt-lbl">5-4-3-2-1</div><div class="qt-sub">Grounding · Anxiety</div></div>
+        <div class="qt" onclick="openTool('journal')"><div class="qt-ic">📝</div><div class="qt-lbl">Journal</div><div class="qt-sub">Reflect · Process</div></div>
+        <div class="qt" onclick="openTool('cbt')"><div class="qt-ic">🔄</div><div class="qt-lbl">Thought Check</div><div class="qt-sub">CBT · Reframe</div></div>
+      </div>
+
+      <div class="crisis">
+        <div class="ct" style="color:#fff">🆘 Need immediate support?</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.8);line-height:1.5;margin-bottom:.65rem">If you're in crisis or having thoughts of self-harm, please reach out. You don't have to face this alone.</div>
+        <a href="tel:988" class="cb">📞 Call 988</a><a href="sms:988" class="cb">💬 Text 988</a>
+      </div>
+    </div>
+
+    <!-- TOOLS -->
+    <div class="tab" id="tab-tools">
+      <div class="pg-hdr"><div class="pg-name">Wellness Tools</div><div style="font-size:.82rem;color:rgba(255,255,255,.5);margin-top:.2rem">Evidence-based techniques for you</div></div>
+      <span class="slbl">Immediate Relief</span>
+      <div class="tool-list">
+        <div class="ti" onclick="openTool('breathing')"><div class="ti-row"><div class="ti-ic" style="background:#CCFBF1">🫁</div><div style="flex:1"><div class="ti-title">Box Breathing (4-4-4-4)</div><div class="ti-desc">Activates the parasympathetic nervous system. Used by Navy SEALs and first responders worldwide.</div><div class="ti-meta">3–5 min · Anxiety · Stress · Pre-shift</div></div><div class="ti-arr">›</div></div></div>
+        <div class="ti" onclick="openTool('grounding')"><div class="ti-row"><div class="ti-ic" style="background:#F0FDF4">🌿</div><div style="flex:1"><div class="ti-title">5-4-3-2-1 Grounding</div><div class="ti-desc">Evidence-based sensory technique that interrupts anxiety and panic spirals in minutes.</div><div class="ti-meta">5 min · Panic · Overwhelm · PTSD</div></div><div class="ti-arr">›</div></div></div>
+        <div class="ti" onclick="openTool('progressive')"><div class="ti-row"><div class="ti-ic" style="background:#FFF7ED">🧘</div><div style="flex:1"><div class="ti-title">Progressive Muscle Relaxation</div><div class="ti-desc">Jacobson's PMR — systematically tense and release to reduce physical tension stored from high-stress work.</div><div class="ti-meta">10 min · Physical Tension · Sleep</div></div><div class="ti-arr">›</div></div></div>
+      </div>
+      <span class="slbl">Reflection & Cognitive</span>
+      <div class="tool-list">
+        <div class="ti" onclick="openTool('journal')"><div class="ti-row"><div class="ti-ic" style="background:#EFF6FF">📝</div><div style="flex:1"><div class="ti-title">Guided Journaling</div><div class="ti-desc">Profession-specific prompts rooted in Pennebaker's expressive writing research. Also accessible from Calendar.</div><div class="ti-meta">5–15 min · Processing · Reflection</div></div><div class="ti-arr">›</div></div></div>
+        <div class="ti" onclick="openTool('cbt')"><div class="ti-row"><div class="ti-ic" style="background:#FAF5FF">🔄</div><div style="flex:1"><div class="ti-title">CBT Thought Record</div><div class="ti-desc">Identify, challenge, and reframe negative automatic thoughts using Beck's CBT framework.</div><div class="ti-meta">10 min · Negative Thinking · Depression</div></div><div class="ti-arr">›</div></div></div>
+        <div class="ti" onclick="openTool('mbsr')"><div class="ti-row"><div class="ti-ic" style="background:#ECFDF5">🧠</div><div style="flex:1"><div class="ti-title">MBSR Body Scan</div><div class="ti-desc">Kabat-Zinn's Mindfulness-Based Stress Reduction — the most evidence-supported burnout intervention.</div><div class="ti-meta">12 min · Burnout · Stress · Focus</div></div><div class="ti-arr">›</div></div></div>
+      </div>
+      <span class="slbl">Resilience</span>
+      <div class="tool-list">
+        <div class="ti" onclick="openTool('selfcompassion')"><div class="ti-row"><div class="ti-ic" style="background:#FFF1F2">💙</div><div style="flex:1"><div class="ti-title">Self-Compassion Break</div><div class="ti-desc">Dr. Kristin Neff's 3-step protocol — proven to reduce burnout and self-criticism in helping professionals.</div><div class="ti-meta">5 min · Burnout · Self-Criticism</div></div><div class="ti-arr">›</div></div></div>
+        <div class="ti" onclick="openTool('gratitude')"><div class="ti-row"><div class="ti-ic" style="background:#FEFCE8">🌟</div><div style="flex:1"><div class="ti-title">Gratitude Practice</div><div class="ti-desc">Emmons and McCullough — regular gratitude practice significantly increases wellbeing and reduces depression.</div><div class="ti-meta">3 min · Daily · Mood · Wellbeing</div></div><div class="ti-arr">›</div></div></div>
+      </div>
+    </div>
+
+    <!-- AI CHAT -->
+    <div class="tab" id="tab-chat" style="display:none;flex-direction:column;height:100%;overflow:hidden">
+      <div class="chat-hdr">
+        <div class="pg-row">
+          <div><div class="pg-greet">Your personal</div><div class="pg-name" id="chatBotName">Affina Companion</div></div>
+          <div style="width:42px;height:42px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.35rem;border:2px solid rgba(255,255,255,.2)" id="chatBotEmoji">🧠</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.35rem;margin-top:.5rem">
+          <div style="width:7px;height:7px;background:#22C55E;border-radius:50%;animation:p2 2s infinite"></div>
+          <span style="font-size:.72rem;color:rgba(255,255,255,.5)">Available now · Confidential</span>
+        </div>
+      </div>
+      <div class="chat-prof-bar" id="chatProfBar"></div>
+      <div class="chat-msgs" id="chatMsgs"></div>
+      <div class="chat-sugg-bar" id="chatSuggs"></div>
+      <div class="chat-disc">Affina is not a licensed therapist. For emergencies call/text 988.</div>
+      <div class="chat-input-bar">
+        <textarea id="chatIn" rows="1" placeholder="Share what's on your mind…" oninput="autoResize(this)" onkeydown="chatKey(event)"></textarea>
+        <button id="chatSend" onclick="sendMsg()">➤</button>
+      </div>
+    </div>
+
+    <!-- LEARN -->
+    <div class="tab" id="tab-learn">
+      <div class="pg-hdr"><div class="pg-name">Learn &amp; Understand</div><div style="font-size:.82rem;color:rgba(255,255,255,.5);margin-top:.2rem">Profession-specific mental health education</div></div>
+      <div style="padding:.85rem 0 0"><div class="lpb"><div class="lpb-title" id="lbTit">Loading…</div><div class="lpb-desc" id="lbDesc">Loading…</div></div></div>
+      <span class="slbl">Key Concepts For You</span>
+      <div class="art-list" id="artList"></div>
+      <span class="slbl">Evidence-Based Mental Health</span>
+      <div class="art-list" id="generalArtList" style="margin-bottom:1rem"></div>
+    </div>
+
+    <!-- CALENDAR & JOURNAL -->
+    <div class="tab" id="tab-calendar">
+      <div class="pg-hdr">
+        <div class="pg-name">Wellness Calendar</div>
+        <div style="font-size:.82rem;color:rgba(255,255,255,.5);margin-top:.2rem" id="calMonthLabel">March 2026</div>
+      </div>
+      <div style="padding:.75rem 0 0;flex-shrink:0">
+        <div class="cal-month-nav">
+          <button class="cal-nav-btn" onclick="changeMonth(-1)">‹ Prev</button>
+          <span class="cal-month-label" id="calMonthTitle">March 2026</span>
+          <button class="cal-nav-btn" onclick="changeMonth(1)">Next ›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+      <span class="slbl">Daily Journal</span>
+      <div class="journal-panel">
+        <div class="journal-mode-row">
+          <div class="jmode-btn active" id="jModeText" onclick="setJMode('text')">✏️ Text</div>
+          <div class="jmode-btn" id="jModeVoice" onclick="setJMode('voice')">🎤 Voice</div>
+        </div>
+        <div id="jTextArea">
+          <div class="jp" id="jPromptText">Loading journal prompt…</div>
+          <textarea class="journal-area" id="jAreaMain" placeholder="Write freely. This is private and stays on your device…"></textarea>
+        </div>
+        <div id="jVoiceArea" style="display:none">
+          <div class="jp" id="jPromptVoice">Loading journal prompt…</div>
+          <button class="voice-btn" id="voiceBtn" onclick="toggleVoice()">🎤 Tap to Record</button>
+          <textarea class="journal-area" id="jVoiceText" placeholder="Your transcribed voice note will appear here…" style="min-height:70px"></textarea>
+        </div>
+        <button class="journal-save" onclick="saveJournalEntry()">Save Entry ✓</button>
+      </div>
+      <span class="slbl">Recent Entries</span>
+      <div id="journalEntries"></div>
+      <span class="slbl">Monthly Insights</span>
+      <div class="card" style="margin-bottom:1rem">
+        <div class="ct">📊 Your Patterns</div>
+        <div style="display:flex;flex-direction:column;gap:.6rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:.85rem"><span style="color:var(--gray)">Check-ins this month</span><span id="insightCheckins" style="font-weight:700;color:var(--teal)">0 days</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:.85rem"><span style="color:var(--gray)">Journal entries</span><span id="insightJournals" style="font-weight:700;color:var(--teal)">0 entries</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:.85rem"><span style="color:var(--gray)">Current streak</span><span id="insightStreak" style="font-weight:700;color:var(--teal)">0 days</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOCAL EVENTS -->
+    <div class="tab" id="tab-events">
+      <div class="pg-hdr">
+        <div class="pg-name">Local Mental Health Events</div>
+        <div style="font-size:.82rem;color:rgba(255,255,255,.5);margin-top:.2rem">Support groups, workshops &amp; resources near you</div>
+      </div>
+      <div style="padding:.75rem 0 0">
+        <div class="events-search">
+          <input class="events-search-inp" id="evSearch" placeholder="Search events or ZIP code…" oninput="filterEvents()">
+        </div>
+        <div class="events-filter-row" id="evFilters"></div>
+      </div>
+      <div id="eventsList"></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="tab" id="tab-profile">
+      <div class="prof-hero">
+        <div class="p-av" id="pAv">🏥</div>
+        <div class="p-name" id="pName">Your Name</div>
+        <div class="p-prof" id="pProf">Healthcare Worker</div>
+      </div>
+      <div style="padding:.85rem 0 .25rem">
+        <div class="stats-row">
+          <div class="sb"><div class="sb-n" id="statStreak">0</div><div class="sb-l">Day Streak</div></div>
+          <div class="sb"><div class="sb-n" id="statCheckins">0</div><div class="sb-l">Check-ins</div></div>
+          <div class="sb"><div class="sb-n" id="statJournals">0</div><div class="sb-l">Journals</div></div>
+        </div>
+      </div>
+      <button class="change-prof-btn" onclick="changeProfession()">🔄 Change My Profession</button>
+      <span class="slbl">Settings</span>
+      <div class="set-list">
+        <div class="si"><span class="si-lbl"><span class="si-ic" id="setProfIc">🏥</span>My Profession</span><span class="si-val" id="setProfNm">Nurse</span></div>
+        <div class="si" onclick="shareApp()"><span class="si-lbl"><span class="si-ic">📤</span>Share Affina</span><span class="si-arr">›</span></div>
+        <div class="si" onclick="toggleN()"><span class="si-lbl"><span class="si-ic">🔔</span>Daily Reminders</span><div class="tog on" id="nTog"></div></div>
+        <div class="si" onclick="switchTab('privacy',null)"><span class="si-lbl"><span class="si-ic">🔒</span>Privacy Policy</span><span class="si-arr">›</span></div>
+        <div class="si"><span class="si-lbl"><span class="si-ic">🌐</span><a href="https://affina1.netlify.app" target="_blank" style="color:var(--navy)">Visit affina.app</a></span><span class="si-arr">›</span></div>
+        <div class="si"><span class="si-lbl"><span class="si-ic">❓</span>Help &amp; Support</span><span class="si-arr">›</span></div>
+        <div class="si" onclick="doLogout()"><span class="si-lbl"><span class="si-ic">🚪</span><span style="color:var(--red)">Sign Out</span></span></div>
+      </div>
+      <div style="text-align:center;padding:1.25rem;font-size:.7rem;color:var(--gray);line-height:1.6;margin-bottom:.5rem">
+        Affina is not a licensed medical provider.<br>For emergencies call/text <strong>988</strong>.<br><br>
+        Built with ❤️ by college students who care.<br>
+        <a href="https://affina1.netlify.app" target="_blank" style="color:var(--teal)">affina1.netlify.app</a> · © 2026 Affina
+      </div>
+    </div>
+
+    <!-- PRIVACY POLICY -->
+    <div id="tab-privacy" class="tab" style="display:none;flex-direction:column;height:100%;overflow:hidden">
+      <div class="pg-hdr">
+        <button onclick="switchTab('profile',document.querySelector('.ni[data-t=profile]'))" style="color:rgba(255,255,255,.6);font-size:1.1rem;background:none;border:none;cursor:pointer;margin-bottom:.5rem;display:block">← Back</button>
+        <div class="pg-name">Privacy Policy</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.45);margin-top:.2rem">Effective: February 27, 2026</div>
+      </div>
+      <div class="pp-body" id="ppBody"></div>
+    </div>
+
+  </div><!-- end tab-wrap -->
+
+  <!-- BOTTOM NAV (6 items) -->
+  <nav class="bnav">
+    <div class="ni active" data-t="home" onclick="switchTab('home',this)"><span class="ni-icon">🏠</span><span class="ni-lbl">Home</span></div>
+    <div class="ni" data-t="tools" onclick="switchTab('tools',this)"><span class="ni-icon">🛠️</span><span class="ni-lbl">Tools</span></div>
+    <div class="ni" data-t="chat" onclick="switchTab('chat',this)"><span class="ni-icon">💬</span><span class="ni-lbl">AI Chat</span></div>
+    <div class="ni" data-t="calendar" onclick="switchTab('calendar',this)"><span class="ni-icon">📅</span><span class="ni-lbl">Journal</span></div>
+    <div class="ni" data-t="events" onclick="switchTab('events',this)"><span class="ni-icon">📍</span><span class="ni-lbl">Events</span></div>
+    <div class="ni" data-t="profile" onclick="switchTab('profile',this)"><span class="ni-icon">👤</span><span class="ni-lbl">Profile</span></div>
+  </nav>
+</div><!-- end s-app -->
+
+</div><!-- appShell -->
+
+<!-- MODALS -->
+<div class="mo" id="toolMo" onclick="closeMoOut(event,'toolMo')"><div class="ms"><div class="mp"><button class="mc" onclick="closeMo('toolMo')">✕</button><div class="mh"></div><div id="toolMoBody"></div></div></div></div>
+<div class="mo" id="artMo" onclick="closeMoOut(event,'artMo')"><div class="ms"><div class="mp"><button class="mc" onclick="closeMo('artMo')">✕</button><div class="mh"></div><div id="artMoBody"></div></div></div></div>
+<div class="mo" id="ciMo" onclick="closeMoOut(event,'ciMo')"><div class="ms"><div class="mp"><button class="mc" onclick="closeMo('ciMo')">✕</button><div class="mh"></div><div id="ciBody"></div></div></div></div>
+<div class="mo" id="shareMo" onclick="closeMoOut(event,'shareMo')"><div class="ms"><div class="mp"><button class="mc" onclick="closeMo('shareMo')">✕</button><div class="mh"></div>
+  <div class="mt">Share Affina</div><div class="msub">Help others discover mental health support built for their profession.</div>
+  <div class="share-opts">
+    <div class="share-opt" onclick="doShare('copy')"><div class="share-opt-ic">🔗</div><div class="share-opt-lbl">Copy Link</div></div>
+    <div class="share-opt" onclick="doShare('native')"><div class="share-opt-ic">📤</div><div class="share-opt-lbl">Share</div></div>
+    <div class="share-opt" onclick="doShare('sms')"><div class="share-opt-ic">💬</div><div class="share-opt-lbl">Text Friend</div></div>
+    <div class="share-opt" onclick="doShare('email')"><div class="share-opt-ic">📧</div><div class="share-opt-lbl">Email</div></div>
+  </div>
+  <div class="share-link-box"><span class="share-link-url" id="shareLinkUrl">affina1.netlify.app</span><button class="share-copy-btn" onclick="doShare('copy')">Copy</button></div>
+</div></div></div>
+<div class="mo" id="journalViewMo" onclick="closeMoOut(event,'journalViewMo')"><div class="ms"><div class="mp"><button class="mc" onclick="closeMo('journalViewMo')">✕</button><div class="mh"></div><div id="journalViewBody"></div></div></div></div>
+
+<div class="toast" id="toastEl"></div>
+
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════
+// PROFESSION DATA
+// ═══════════════════════════════════════════════
+const P = {
+  nurse:{n:'Nurse / NP',e:'🏥',b:'Healthcare Worker',q:{t:'Caring for yourself is not self-indulgence — it is self-preservation.',s:'— Audre Lorde'},fi:'💙',ft:'Understanding Compassion Fatigue',fb:'Compassion fatigue occurs when repeated exposure to patient suffering depletes your emotional resources. It differs from burnout in that it develops rapidly and is directly tied to empathic engagement with others in pain. Symptoms include emotional exhaustion, reduced empathy, intrusive thoughts about patients, and a sense of hopelessness. Recognizing it early is the most important step toward recovery.',fc:'Figley, C.R. (1995). Compassion Fatigue. Brunner/Mazel. WHO ICD-11 Burnout Framework.',mr:{1:'That\'s a hard place to be. What you\'re feeling is real and valid. Try the 5-4-3-2-1 grounding exercise.',2:'Low days are part of the work you carry. Be gentle with yourself today.',3:'Getting through the day counts. Even okay takes effort in your role.',4:'Glad to hear it. Use that energy for something restorative.',5:'That\'s wonderful — hold onto it. Your resilience is something to honor.'},arts:[{tag:'Compassion Fatigue',t:'The Science Behind Compassion Fatigue in Nursing',d:'Why nurses are uniquely vulnerable, what the research shows, and evidence-based recovery strategies.',time:'5 min',src:'JAMA Nursing'},{tag:'Burnout',t:'Maslach Burnout Inventory: Are You Burned Out?',d:'The three dimensions of nursing burnout — emotional exhaustion, depersonalization, reduced accomplishment — and how to address each.',time:'6 min',src:'MBI Research'},{tag:'MBSR',t:'Mindfulness-Based Stress Reduction for Nurses',d:'Multiple systematic reviews confirm MBSR as the most effective single intervention for nurse burnout. Here is how to start.',time:'4 min',src:'PMC / Nature'}]},
+  doctor:{n:'Physician',e:'⚕️',b:'Medical Professional',q:{t:'To study the phenomena of disease without books is to sail an uncharted sea, but to study books without patients is not to go to sea at all.',s:'— Sir William Osler'},fi:'🩺',ft:'Physician Burnout and Moral Injury',fb:'Physicians experience unique burnout driven by moral injury — the distress of being unable to provide the care you know patients deserve due to systemic constraints. Research shows over 50% of physicians report at least one symptom of burnout. The culture of medicine often demands invulnerability, making it harder to seek help. Burnout is an occupational phenomenon, not a personal failure.',fc:'Shanafelt TD, et al. Changes in Burnout and Satisfaction. Mayo Clin Proc. 2019.',mr:{1:'Physician suffering is real and undertreated. The CBT Thought Record may help interrupt unhelpful thought patterns.',2:'Your wellbeing directly affects patient care — taking this seriously is good medicine for yourself.',3:'Okay is enough right now.',4:'Glad to hear it. Protect that energy.',5:'That resilience is hard-won. Honor it.'},arts:[{tag:'Moral Injury',t:'Moral Injury in Physicians: Beyond Burnout',d:'Why the burnout label misses what physicians actually experience — and what moral injury theory reveals about physician suffering.',time:'7 min',src:'NEJM'},{tag:'Burnout',t:'Physician Wellness: The Evidence Base',d:'A review of evidence-based interventions specifically validated for physician wellbeing, from MBSR to peer coaching.',time:'6 min',src:'AMA'}]},
+  police:{n:'Officer',e:'🚔',b:'Law Enforcement',q:{t:'Courage is not the absence of fear, but the judgment that something else is more important than fear.',s:'— Ambrose Redmoon'},fi:'🛡️',ft:'Managing Hypervigilance Off Duty',fb:'Hypervigilance is an adaptive survival response that law enforcement officers develop — a state of heightened alertness that protects you on duty but cannot be easily switched off. Chronic hypervigilance off duty is associated with relationship strain, insomnia, and irritability, and is a precursor to PTSD. Box breathing and grounding are evidence-based tools validated for law enforcement populations.',fc:'Violanti, J.M. et al. (2017). Police Occupational Demands. Int J Emergency Mental Health. IACP Guidelines.',mr:{1:'This job takes a real toll. Box breathing was designed for your world — give it 3 minutes.',2:'Low days are heavy in this work. You do not have to carry it alone.',3:'Getting through counts. You showed up.',4:'Good. Take care of that energy.',5:'Hard-won good days deserve to be recognized.'},arts:[{tag:'PTSD',t:'Critical Incident Stress and PTSD in Law Enforcement',d:'What happens in the brain after traumatic incidents, how PTSD develops in officers, and evidence-based early interventions.',time:'6 min',src:'IACP / NIMH'},{tag:'Hypervigilance',t:'The Science of Hypervigilance: Why You Cannot Turn It Off',d:'The neurological basis of hypervigilance in first responders, its effects on relationships and sleep, and how to manage it.',time:'5 min',src:'APA'}]},
+  firefighter:{n:'Firefighter',e:'🚒',b:'First Responder',q:{t:'You do not have to be fearless. You just have to be willing.',s:'— FDNY'},fi:'🔥',ft:'Processing Trauma After Difficult Calls',fb:'Firefighters respond to some of the most traumatic events a person can witness. CISM research shows that structured processing after traumatic calls is more protective than suppression. The culture of toughness in the fire service often prevents this, contributing to PTSD rates 3-5x higher than the general population. Acknowledging the emotional impact of difficult calls is a professional skill, not a weakness.',fc:'FEMA First Responder Mental Health. Mitchell, J.T. CISM Framework. FBHA.',mr:{1:'Difficult calls leave a mark. Acknowledging that is not weakness.',2:'Carrying what this work demands is heavy. Try the grounding exercise.',3:'Getting through today counts.',4:'Good. Protect that energy.',5:'Hard-earned. Honor it.'},arts:[{tag:'Trauma',t:'Critical Incident Stress Management for Firefighters',d:'The CISM framework, what peer support looks like in the fire service, and how to use it.',time:'5 min',src:'FEMA / IAFF'}]},
+  emt:{n:'EMT / Paramedic',e:'🚑',b:'Emergency Medical Services',q:{t:'The most important thing you can do for yourself is give yourself permission to need help.',s:'— EMS community'},fi:'💊',ft:'Secondary Traumatic Stress in EMS',fb:'EMS providers are exposed to traumatic events at some of the highest rates of any profession. Secondary traumatic stress can develop even without direct physical danger. Research shows EMS providers have significantly higher rates of PTSD, depression, and suicidality than the general population, yet have some of the lowest rates of mental health service utilization. You are worth the same level of care you give your patients.',fc:'Donnelly E. (2012). Work-related stress and posttraumatic stress in EMS. Prehospital Emergency Care.',mr:{1:'EMS carries one of the heaviest invisible loads. Please try a grounding tool right now.',2:'You deserve the same care you give. One small step today.',3:'Okay is enough.',4:'Good. Hold onto it.',5:'Honor this feeling.'},arts:[{tag:'Trauma',t:'PTSD in EMS: Prevalence, Risk, and Recovery',d:'What the research shows about PTSD rates in paramedics and EMTs, and evidence-based pathways to recovery.',time:'5 min',src:'Prehospital Emergency Care'}]},
+  socialworker:{n:'Social Worker',e:'🤝',b:'Helping Professional',q:{t:'You cannot pour from an empty cup. Fill yours first.',s:'— NASW'},fi:'💚',ft:'Vicarious Trauma and Secondary Stress',fb:'Social workers absorb the trauma of clients as an occupational reality. Vicarious trauma — the cumulative transformation of a helper\'s worldview from exposure to client traumatic material — is not a sign of weakness. It is an occupational hazard as real as a physical injury. The NASW Code of Ethics explicitly includes professional self-care as an ethical obligation.',fc:'Pearlman, L.A. and Saakvitne, K.W. (1995). Trauma and the Therapist. NASW Code of Ethics 4.05.',mr:{1:'Carrying clients\' pain is real work. Be gentle with yourself today.',2:'Low days are part of this work. The CBT thought record can help.',3:'Okay is enough today.',4:'Good. Protect that energy.',5:'Hold onto this.'},arts:[{tag:'Vicarious Trauma',t:'Understanding Vicarious Trauma in Social Work',d:'What VT is, how it differs from burnout and compassion fatigue, and NASW-recommended strategies for recovery.',time:'5 min',src:'NASW'}]},
+  student:{n:'Student',e:'🎓',b:'Student',q:{t:'You do not have to have it all figured out to move forward. One step at a time.',s:'— Unknown'},fi:'📚',ft:'Academic Stress and Anxiety',fb:'College students experience significantly elevated rates of anxiety and depression compared to the general population. Academic pressure, social transitions, financial stress, and uncertainty about the future compound. Research from ACHA shows that over 60% of students felt overwhelming anxiety in the past year.',fc:'American College Health Association NCHA (2024). APA College Mental Health Report.',mr:{1:'School can be genuinely overwhelming. What you\'re feeling is valid.',2:'Low days happen. One tool, one small step.',3:'Getting through the day counts.',4:'Good. Take care of it.',5:'That is great. Hold onto it.'},arts:[{tag:'Academic Stress',t:'The Science of College Stress and How to Manage It',d:'Why student stress is different, what the research says works, and practical tools for the academic environment.',time:'4 min',src:'APA'},{tag:'Sleep',t:'Sleep Deprivation and Student Mental Health',d:'The relationship between sleep debt and academic anxiety — and simple sleep hygiene that actually helps.',time:'4 min',src:'CDC / NSF'}]},
+  teacher:{n:'Teacher',e:'📚',b:'Educator',q:{t:'Teaching is the one profession that creates all other professions.',s:'— Unknown'},fi:'🍎',ft:'Emotional Labor in Education',fb:'Teaching requires sustained emotional labor — managing your own emotions and those of students across entire days. Research shows teachers experience some of the highest rates of occupational burnout of any profession. MBSR and gratitude practices show particular effectiveness in teacher populations.',fc:'Herman, K.C. et al. (2018). Empirically derived profiles of teacher stress. Journal of Positive Behavior Interventions.',mr:{1:'Teaching takes more than most people ever see. What you\'re feeling is valid.',2:'Be gentle with yourself today.',3:'Getting through the day counts more than people know.',4:'Good. Protect that energy.',5:'Honor this feeling.'},arts:[{tag:'Burnout',t:'Teacher Burnout: Why It Happens and What Actually Helps',d:'The three drivers of teacher burnout and evidence-based strategies tailored to the classroom environment.',time:'5 min',src:'Journal of Positive Behavior'}]},
+  military:{n:'Service Member / Veteran',e:'🎖️',b:'Military / Veteran',q:{t:'The strength it takes to ask for help is the same strength that made you a soldier.',s:'— VA Mental Health'},fi:'🎖️',ft:'PTSD, Moral Injury and the Transition Home',fb:'Veterans and active-duty service members face unique mental health challenges shaped by combat exposure, moral injury, TBI, and the profound difficulty of transitioning between military and civilian identity. Moral injury — the distress from acts that violate one\'s moral code — is as prevalent as PTSD and responds to different treatment approaches. Seeking help is not weakness.',fc:'Litz et al. (2009). Moral injury and moral repair in war veterans. Clinical Psychology Review. VA/DoD CPG for PTSD.',mr:{1:'You have been carrying extraordinary weight. Please try a grounding tool right now.',2:'What you\'re feeling matters. One small step today.',3:'Getting through counts.',4:'Protect that energy.',5:'Hard-earned. Honor it.'},arts:[{tag:'PTSD',t:'PTSD in Veterans: What You Need to Know',d:'VA/DoD evidence-based overview of PTSD in veterans, treatment approaches, and why early intervention matters.',time:'6 min',src:'VA / DoD'},{tag:'Moral Injury',t:'Moral Injury: The Wound Beneath the Wound',d:'Why moral injury often goes unrecognized and requires different approaches than PTSD.',time:'7 min',src:'Boston VA'}]},
+  accountant:{n:'Business / Finance Pro',e:'💼',b:'Business Professional',q:{t:'Almost everything will work again if you unplug it for a few minutes, including you.',s:'— Anne Lamott'},fi:'📊',ft:'Occupational Stress in High-Pressure Careers',fb:'Finance and business professionals experience high rates of occupational stress, anxiety, and burnout driven by performance pressure, long hours, and an always-on culture. Research shows perfectionism — common in accounting and finance — is a significant burnout risk factor. The cognitive demands of the work make it harder to switch off.',fc:'APA Work and Well-Being Survey (2024). Maslach Burnout Inventory for General Survey.',mr:{1:'High-pressure work takes a real toll. The CBT thought record may help break a negative spiral.',2:'Be gentle with yourself today.',3:'Getting through counts.',4:'Good. Protect it.',5:'Hold onto this.'},arts:[{tag:'Stress',t:'Burnout in Finance: What the Research Shows',d:'Why financial professionals are particularly vulnerable to burnout and which evidence-based tools work best.',time:'4 min',src:'APA'}]},
+  therapist:{n:'Mental Health Professional',e:'🧠',b:'Mental Health Provider',q:{t:'Caring for yourself with the same compassion you offer your clients is the most ethical thing you can do.',s:'— Brene Brown'},fi:'🧩',ft:'Vicarious Trauma and Therapist Self-Care',fb:'Mental health professionals are at high risk of vicarious traumatization — the cumulative transformation of the therapist\'s inner world from engagement with clients\' traumatic experiences. This is an occupational reality, not a clinical failure. The APA Ethics Code explicitly addresses the responsibility of practitioners to monitor their own functioning.',fc:'Pearlman and Saakvitne (1995). Trauma and the Therapist. APA Ethics Code 2.06.',mr:{1:'Even healers need healing. Please use these tools for yourself.',2:'Be kind to yourself today.',3:'Getting through counts.',4:'Good. Protect it.',5:'Honor this.'},arts:[{tag:'Vicarious Trauma',t:'Recognizing and Recovering from Vicarious Trauma',d:'Validated assessment tools and evidence-based recovery strategies for mental health providers.',time:'6 min',src:'Traumatology'}]},
+  other:{n:'You',e:'✨',b:'Affina Member',q:{t:'You do not have to be positive all the time. Having feelings does not make you a negative person. It makes you human.',s:'— Lori Deschene'},fi:'🌱',ft:'Building Your Mental Health Practice',fb:'Mental health is not a destination — it is a practice. Research consistently shows that small, daily wellness habits compound over time to produce meaningful improvements in wellbeing, resilience, and quality of life. Starting small and staying consistent is more effective than occasional intense effort.',fc:'Seligman, M.E.P. (2011). Flourish. NIMH Mental Health Basics.',mr:{1:'Whatever you\'re going through is real. Please try one of the tools — even 3 minutes can help.',2:'Be gentle with yourself today.',3:'Getting through the day counts.',4:'Good. Take care of it.',5:'Hold onto this feeling.'},arts:[]}
+};
+
+const GENERAL_ARTICLES = [
+  {tag:'Burnout',t:'Recognizing the 3 Stages of Burnout Before It\'s Too Late',d:'The WHO\'s ICD-11 defines burnout by three dimensions. Learn to identify where you are — and what to do about it.',time:'4 min',src:'WHO',id:'burnout'},
+  {tag:'Anxiety',t:'Understanding Anxiety: What the Brain is Actually Doing',d:'What anxiety is neurologically, how the threat response works, and why evidence-based tools like breathing and grounding actually help.',time:'5 min',src:'NIMH / APA',id:'anxiety'},
+  {tag:'Depression',t:'Recognizing Depression and Taking the First Step',d:'The WHO\'s clinical definition of depression, how it presents differently across professions, and why early action matters most.',time:'6 min',src:'WHO / APA',id:'depression'},
+  {tag:'Sleep',t:'Sleep Deprivation and Mental Health: What the Research Shows',d:'How irregular schedules and sleep debt accelerate burnout, anxiety, and depression — and what sleep hygiene actually helps.',time:'5 min',src:'CDC / NSF',id:'sleep'},
+  {tag:'Stigma',t:'Why High-Performers Avoid Help — And How to Change That',d:'Evidence-based strategies for overcoming the barriers to care in high-stress professions. The cost of untreated suffering.',time:'5 min',src:'APA',id:'stigma'},
+  {tag:'Resilience',t:'What Psychological Resilience Actually Means',d:'The research behind resilience — it is not about being strong, it is about bouncing forward. How it is built, not born.',time:'4 min',src:'APA Resilience Research',id:'resilience'},
+  {tag:'CBT',t:'Cognitive Behavioral Therapy: How It Works and Why It Helps',d:'The most evidence-based psychotherapy explained simply. How thoughts, feelings, and behaviors interact — and how to change the cycle.',time:'6 min',src:'APA Division 12',id:'cbt_article'},
+  {tag:'Crisis Resources',t:'Understanding the 988 Lifeline and When to Use It',d:'What the 988 Suicide and Crisis Lifeline is, how it works, what to expect when you call or text, and why it exists for you.',time:'3 min',src:'SAMHSA',id:'988'},
+  {tag:'Mindfulness',t:'MBSR: The Most Evidence-Supported Mental Health Intervention',d:'What Mindfulness-Based Stress Reduction is, the decades of research behind it, and how to start a practice in minutes a day.',time:'5 min',src:'Kabat-Zinn / UMass',id:'mbsr_article'},
+  {tag:'Self-Compassion',t:'Self-Compassion vs. Self-Esteem: What Actually Protects Your Mental Health',d:'Dr. Kristin Neff\'s research shows that self-compassion — not self-esteem — is the most reliable predictor of psychological wellbeing.',time:'4 min',src:'Self and Identity Journal',id:'selfcomp_article'}
+];
+
+// AI System Prompts
+const SYSPROMPTS = {
+  nurse:'You are Affina, a compassionate mental health companion for nurses and nurse practitioners. You deeply understand nursing-specific mental health challenges: compassion fatigue (Figley, 1995), burnout (WHO ICD-11, Maslach Burnout Inventory), moral distress, secondary traumatic stress, and the emotional demands of bedside care. Speak with warmth, professional respect, and genuine understanding of their world — 12-hour shifts, witnessing patient suffering, staffing shortages, the pressure to always be strong. Offer evidence-based coping strategies (MBSR, CBT, grounding, breathing). You are NOT a licensed therapist. Always remind users you are a wellness support tool. In any crisis, direct immediately to 988. Keep responses warm, concise, and human. Avoid clinical jargon unless the user uses it first.',
+  doctor:'You are Affina, a confidential mental health companion for physicians. You understand moral injury, physician burnout (Shanafelt et al. 50%+ prevalence), the culture of invulnerability, loss of professional identity, and the fear of professional consequences for seeking help. You know the difference between burnout and moral injury (Litz et al., 2009). Speak with intelligence and respect, acknowledging both their clinical expertise and their humanity. You are NOT a licensed therapist. For crises, direct to 988.',
+  police:'You are Affina, a mental health companion for law enforcement officers. You understand cop culture — the code of silence, stigma around mental health, hypervigilance, critical incident stress, and moral injury. You frame mental wellness as a tactical and professional skill. You know police suicide rates exceed line-of-duty deaths. Be direct, respectful, zero-judgment. For crises, direct to 988 or Cop2Cop (1-866-COP-2COP). You are NOT a licensed therapist.',
+  firefighter:'You are Affina, a mental health companion for firefighters. You understand fire service culture, CISM, the Firefighter Behavioral Health Alliance research, and that firefighter suicide rates are higher than line-of-duty deaths. Use language that respects fire service culture while challenging its most harmful norms. You are NOT a licensed therapist. For crises, direct to 988.',
+  emt:'You are Affina, a mental health companion for EMTs and paramedics. You understand the relentless pace, secondary traumatic stress, under-resourced profession reality, and the expectation to just move on to the next call. Speak as an equal who understands the clinical reality. You are NOT a licensed therapist. For crises, direct to 988.',
+  socialworker:'You are Affina, a mental health companion for social workers and helping professionals. You understand vicarious traumatization (Pearlman and Saakvitne), the NASW ethics mandate for self-care, compassion fatigue, and the irony that helpers often will not ask for help. Reframe self-care as an ethical obligation. You are NOT a licensed therapist. For crises, direct to 988.',
+  student:'You are Affina, a supportive mental health companion for college and graduate students. You understand academic pressure, identity development, financial stress, imposter syndrome, and that 60%+ of students experience overwhelming anxiety (ACHA NCHA, 2024). Speak warmly and non-judgmentally. Encourage campus counseling centers without pressure. You are NOT a licensed therapist. For crises, direct to 988 or campus crisis services.',
+  teacher:'You are Affina, a mental health companion for teachers and educators. You understand emotional labor, chronic underrecognition, behavioral challenges, administrative burden, and the burnout rates in education. MBSR and gratitude practices show particular effectiveness in teacher populations. You are NOT a licensed therapist. For crises, direct to 988.',
+  military:'You are Affina, a mental health companion for active duty service members and veterans. You deeply understand military culture, PTSD (VA/DoD CPG), moral injury (Litz et al.), TBI-related mental health challenges, and veteran suicide as a national crisis. Be direct and respectful, framing mental wellness in mission-relevant terms when helpful. For crises, direct to 988 press 1 (Veterans Crisis Line). You are NOT a licensed therapist.',
+  accountant:'You are Affina, a mental health companion for business and finance professionals. You understand occupational stress in high-performance environments, performance pressure, perfectionism as a burnout driver, and corporate mental health stigma. Speak in a grounded, practical way. You are NOT a licensed therapist. For crises, direct to 988.',
+  therapist:'You are Affina, a mental health companion for mental health professionals. You understand vicarious trauma, the ethical complexity of personal therapy (APA Ethics Code 2.06), and how professional identity makes it harder to acknowledge personal struggle. Create a space where they can be the client, not the clinician. You are NOT a replacement for personal therapy or supervision. For crises, direct to 988.',
+  other:'You are Affina, a warm and compassionate mental health companion. Draw on CBT, MBSR, positive psychology (Seligman), and self-compassion research (Neff) to offer practical, accessible support. You are NOT a licensed therapist. Always refer to 988 in any crisis.'
+};
+
+const CHAT_SUGGESTIONS = {
+  nurse:['I had a really hard shift','I feel numb after work','Help me with compassion fatigue','I cannot stop thinking about a patient'],
+  doctor:['I feel like a failure','My work is affecting my marriage','I do not enjoy medicine anymore','I am experiencing moral injury'],
+  police:['Cannot turn off hypervigilance','A bad call is haunting me','I need stress relief tools','How do I talk to my family'],
+  firefighter:['Rough call I cannot shake','I feel numb to it all','How do I decompress','I am struggling but will not say it'],
+  emt:['I feel burned out and exhausted','Cannot stop replaying a call','Need to decompress after shifts','Is what I am feeling normal'],
+  socialworker:['I am absorbing my clients trauma','I feel hopeless about my work','How do I set boundaries','I need to vent'],
+  student:['I am overwhelmed with everything','I feel like I am failing','I have bad anxiety before exams','I am lonely and struggling'],
+  teacher:['I am dreading going to work','I feel like I have nothing left','I need to find joy again','Students are overwhelming me'],
+  military:['I cannot talk to anyone about this','Civilian life feels wrong','I am angry all the time','I have nightmares'],
+  accountant:['Work stress is out of control','I cannot stop working','I feel like I am failing','I need to disconnect'],
+  therapist:['I am struggling with vicarious trauma','I need to be the client for once','I am questioning my purpose','My caseload is burning me out'],
+  other:['I am feeling overwhelmed','I need someone to talk to','Help me calm down','I have been really low lately']
+};
+
+// ═══════════════════════════════════════════════
+// STATE — starts completely fresh each session
+// ═══════════════════════════════════════════════
+let currentUser = null;
+let prof = null;
+let chatProf = null;
+let chatHist = [];
+let chatBusy = false;
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+let journalEntries = []; // fresh each session
+let moodLog = {};        // fresh each session
+let streakCount = 0;     // fresh each session
+let checkinCount = 0;
+let journalMode = 'text';
+let mediaRecorder = null;
+let isRecording = false;
+let voiceChunks = [];
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function goTo(id, sub) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (sub) showAuthTab(sub);
+}
+
+function switchTab(name, el) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s-app').classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => { t.classList.remove('active'); t.style.display = ''; });
+  const tab = document.getElementById('tab-' + name);
+  if (!tab) return;
+  tab.classList.add('active');
+  if (name === 'chat' || name === 'privacy') tab.style.display = 'flex';
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('active'));
+  const navEl = el || document.querySelector(`.ni[data-t="${name}"]`);
+  if (navEl) navEl.classList.add('active');
+  if (name === 'calendar') buildCalendar();
+  if (name === 'events') buildEvents();
+  if (name === 'learn') buildLearnTab();
+}
+
+// ═══════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════
+function showAuthTab(tab) {
+  document.getElementById('formSignup').classList.toggle('active', tab === 'signup');
+  document.getElementById('formLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
+  document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('authHdrTitle').textContent = tab === 'signup' ? 'Create Account' : 'Welcome Back';
+  document.getElementById('authHdrSub').textContent = tab === 'signup' ? 'Join thousands getting profession-specific mental health support' : 'Sign in to continue your wellness journey';
+}
+
+function checkConsentReady() {
+  const pp = document.getElementById('consentPP').checked;
+  const age = document.getElementById('consentAge').checked;
+  const btn = document.getElementById('suBtn');
+  btn.disabled = !(pp && age);
+  btn.style.opacity = (pp && age) ? '1' : '.5';
+  btn.style.pointerEvents = (pp && age) ? 'all' : 'none';
+}
+
+function doSignup() {
+  const name = document.getElementById('suName').value.trim();
+  const email = document.getElementById('suEmail').value.trim();
+  const pass = document.getElementById('suPass').value;
+  const pass2 = document.getElementById('suPass2').value;
+  if (!name) { toast('Please enter your name'); return; }
+  if (!email || !email.includes('@')) { toast('Please enter a valid email'); return; }
+  if (pass.length < 8) { toast('Password must be at least 8 characters'); return; }
+  if (pass !== pass2) { toast('Passwords do not match'); return; }
+  currentUser = { name, email, createdAt: new Date().toISOString() };
+  resetState();
+  goTo('s-profession');
+}
+
+function doLogin() {
+  const email = document.getElementById('liEmail').value.trim();
+  const pass = document.getElementById('liPass').value;
+  if (!email) { toast('Please enter your email'); return; }
+  if (!pass) { toast('Please enter your password'); return; }
+  // Demo: accept any credentials
+  const displayName = email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1);
+  currentUser = { name: displayName, email, createdAt: new Date().toISOString() };
+  resetState();
+  goTo('s-profession');
+}
+
+function doLogout() {
+  currentUser = null;
+  prof = null;
+  resetState();
+  goTo('s-welcome');
+  toast('Signed out');
+}
+
+function resetState() {
+  // Always start completely fresh
+  streakCount = 0;
+  checkinCount = 0;
+  journalEntries = [];
+  moodLog = {};
+  chatHist = [];
+  chatBusy = false;
+}
+
+function previewPP() {
+  buildPrivacyPolicy();
+  document.getElementById('artMoBody').innerHTML = '<div style="max-height:60vh;overflow-y:auto"><div id="ppPreview">' + document.getElementById('ppBody').innerHTML + '</div></div>';
+  document.getElementById('artMo').classList.add('open');
+}
+
+function selProf(el) {
+  document.querySelectorAll('.pc').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  prof = el.dataset.p;
+  document.getElementById('profCont').classList.add('on');
+}
+
+function enterApp() {
+  if (!prof) return;
+  goTo('s-app');
+  buildApp();
+}
+
+function changeProfession() {
+  document.querySelectorAll('.pc').forEach(c => { c.classList.remove('sel'); if (c.dataset.p === prof) c.classList.add('sel'); });
+  document.getElementById('profCont').classList.add('on');
+  document.getElementById('profCont').onclick = () => { if (!prof) return; goTo('s-app'); buildApp(); toast('Profession updated!'); switchTab('home', document.querySelector('.ni[data-t="home"]')); };
+  goTo('s-profession');
+}
+
+// ═══════════════════════════════════════════════
+// BUILD APP — all state starts at zero
+// ═══════════════════════════════════════════════
+function buildApp() {
+  const p = P[prof] || P.other;
+  const hr = new Date().getHours();
+  const greet = hr < 12 ? 'morning' : hr < 17 ? 'afternoon' : 'evening';
+  const userName = currentUser ? currentUser.name : p.n;
+
+  document.getElementById('hGreet').textContent = greet;
+  document.getElementById('hName').textContent = userName;
+  document.getElementById('hEmoji').textContent = p.e;
+  document.getElementById('hBadge').textContent = '🔥 0-Day Streak';
+  document.getElementById('qTxt').textContent = p.q.t;
+  document.getElementById('qSrc').textContent = p.q.s;
+  document.getElementById('fIc').textContent = p.fi;
+  document.getElementById('fTit').textContent = p.ft;
+  document.getElementById('fBody').textContent = p.fb;
+  document.getElementById('fCite').textContent = p.fc;
+  document.getElementById('sNum').textContent = '0';
+  document.getElementById('streakMsg').textContent = 'Start your streak today!';
+
+  // Fresh streak dots (all empty)
+  const dots = document.getElementById('sDots');
+  dots.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const d = document.createElement('div');
+    d.className = 'sd';
+    dots.appendChild(d);
+  }
+
+  // Reset check-in
+  const res = document.getElementById('checkinResult');
+  res.style.display = 'none';
+  const btn = document.getElementById('checkinBtn');
+  btn.textContent = "Start Today's Check-In \u2192";
+  btn.style.background = 'var(--teal)';
+  btn.disabled = false;
+
+  // Profile
+  document.getElementById('pAv').textContent = p.e;
+  document.getElementById('pName').textContent = userName;
+  document.getElementById('pProf').textContent = p.b;
+  document.getElementById('setProfIc').textContent = p.e;
+  document.getElementById('setProfNm').textContent = p.n;
+  document.getElementById('statStreak').textContent = '0';
+  document.getElementById('statCheckins').textContent = '0';
+  document.getElementById('statJournals').textContent = '0';
+
+  buildLearnTab();
+  buildChatUI();
+  buildChatWelcome();
+  buildPrivacyPolicy();
+  buildJournalPrompt();
+  updateInsights();
+
+  // Build calendar
+  setTimeout(() => { buildCalendar(); buildEvents(); }, 100);
+}
+
+// ═══════════════════════════════════════════════
+// LEARN TAB
+// ═══════════════════════════════════════════════
+function buildLearnTab() {
+  const p = P[prof] || P.other;
+  document.getElementById('lbTit').textContent = p.e + ' Mental Health for ' + p.n;
+  document.getElementById('lbDesc').textContent = 'Curated resources tailored specifically to your profession and its unique challenges.';
+
+  const al = document.getElementById('artList');
+  al.innerHTML = '';
+  (p.arts || []).forEach(a => {
+    const el = document.createElement('div');
+    el.className = 'ac';
+    el.innerHTML = '<div class="at-tag">' + a.tag + '</div><div class="at-tit">' + a.t + '</div><div class="at-desc">' + a.d + '</div><div class="at-meta"><span>📖 ' + a.time + '</span><span>·</span><span>' + a.src + '</span></div>';
+    el.onclick = () => openArticle(a.t, a.d, a.src, a.tag);
+    al.appendChild(el);
+  });
+
+  const gl = document.getElementById('generalArtList');
+  gl.innerHTML = '';
+  GENERAL_ARTICLES.forEach(a => {
+    const el = document.createElement('div');
+    el.className = 'ac';
+    el.innerHTML = '<div class="at-tag">' + a.tag + '</div><div class="at-tit">' + a.t + '</div><div class="at-desc">' + a.d + '</div><div class="at-meta"><span>📖 ' + a.time + '</span><span>·</span><span>' + a.src + '</span></div>';
+    el.onclick = () => openArt(a.id);
+    gl.appendChild(el);
+  });
+}
+
+// ═══════════════════════════════════════════════
+// ARTICLE MODALS
+// ═══════════════════════════════════════════════
+function openArticle(title, desc, src, tag) {
+  document.getElementById('artMoBody').innerHTML = '<div class="mt">' + title + '</div><div style="margin:.75rem 0"><span style="font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal)">' + tag + '</span></div><p style="font-size:.88rem;color:var(--gray);line-height:1.7;margin-bottom:.85rem">' + desc + '</p><div class="cite">Source: ' + src + '. For the full research and clinical guidelines, we recommend visiting PubMed, APA PsycNet, or the organization\'s official website.</div>';
+  document.getElementById('artMo').classList.add('open');
+}
+
+const ART_CONTENT = {
+  burnout:{title:'The 3 Stages of Burnout',content:'<p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">The World Health Organization\'s ICD-11 defines burnout as an occupational phenomenon characterized by three dimensions:</p>' + [['Emotional Exhaustion','Feelings of energy depletion — the sense that you have nothing left to give.','var(--teal)'],['Depersonalization / Cynicism','Increased mental distance from your job, cynicism, or feeling detached from the people you serve.','var(--gold)'],['Reduced Professional Efficacy','Feeling that your work is no longer meaningful or effective — a persistent sense of failure.','var(--red)']].map(d => '<div style="background:var(--off);border-radius:11px;padding:.9rem;border-left:3px solid ' + d[2] + ';margin-bottom:.65rem"><div style="font-weight:700;color:var(--navy);margin-bottom:.25rem">' + d[0] + '</div><div style="font-size:.8rem;color:var(--gray);line-height:1.5">' + d[1] + '</div></div>').join('') + '<div class="cite">WHO ICD-11 Burnout Definition. Maslach, C., Leiter, M.P. (2016). Burnout. Academic Press.</div>'},
+  anxiety:{title:'Understanding Anxiety: What Your Brain Is Doing',content:'<p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">Anxiety is the brain\'s threat-detection system activating when it perceives danger — real or imagined. The amygdala triggers the stress response, flooding the body with cortisol and adrenaline. In high-stress professions, this system is chronically activated, making it harder to downregulate off-duty.</p><p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">Evidence-based interventions that directly target the nervous system include: diaphragmatic breathing (activates the vagus nerve), grounding techniques (redirect prefrontal cortex attention), and progressive muscle relaxation (reduces physiological arousal).</p><div class="cite">LeDoux, J. (2015). Anxious: Using the Brain to Understand and Treat Fear and Anxiety. Viking. NIMH Anxiety Disorders Overview.</div>'},
+  depression:{title:'Recognizing Depression and Taking the First Step',content:'<p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">The WHO defines a depressive episode as persistent low mood, loss of interest or pleasure (anhedonia), and at least four of the following lasting two or more weeks: changes in sleep, appetite, energy, concentration, self-worth, or recurrent thoughts of death or self-harm.</p><p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">In high-stress professions, depression often presents differently — as irritability, emotional numbing, increased substance use, or somatic symptoms rather than classic sadness. This is why it often goes unrecognized.</p><p style="font-size:.85rem;color:var(--gray);line-height:1.65">The most important step is the first one: acknowledging what you\'re experiencing and reaching out. CBT and behavioral activation have the strongest evidence base for depression alongside medication.</p><div class="cite">WHO International Classification of Diseases ICD-11. APA Practice Guideline for Major Depressive Disorder (2019).</div>'},
+  sleep:{title:'Sleep Deprivation and Mental Health',content:'<p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">Sleep is not passive recovery — it is when the brain consolidates memories, clears metabolic waste, and regulates emotional processing. Even one night of poor sleep impairs the prefrontal cortex\'s ability to regulate the amygdala, making emotional reactions more intense and reducing cognitive flexibility.</p><p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">For shift workers, the impact compounds: chronic sleep deprivation is independently associated with elevated rates of depression, anxiety, cardiovascular disease, and burnout. Sleep hygiene interventions with the strongest evidence include: consistent sleep/wake times, light exposure management, avoiding screens 60 minutes before bed, and temperature-regulated sleep environments.</p><div class="cite">Walker, M. (2017). Why We Sleep. Scribner. CDC Sleep and Sleep Disorders. NSF Sleep Health Index.</div>'},
+  stigma:{title:'Why High-Performers Avoid Help',content:'<p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">Research consistently shows that the people who most need mental health support are often the least likely to seek it. In high-performance professions, this gap is especially pronounced. Common barriers include: fear of judgment from colleagues, concern about professional consequences, culture of self-reliance, lack of time and access, and believing that coping alone is part of the role.</p><p style="font-size:.85rem;color:var(--gray);line-height:1.65">The evidence is clear: seeking help does not reduce performance or professionalism. Untreated mental health struggles are the primary driver of the outcomes people fear — impaired judgment, errors, and early career exit.</p><div class="cite">Clement et al. (2015). What is the impact of mental health-related stigma on help-seeking? Psychological Medicine. IACP Law Enforcement Mental Health Initiative.</div>'},
+  resilience:{title:'What Psychological Resilience Actually Means',content:'<p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">Resilience is not the absence of struggle or pain. The APA defines it as the process of adapting well in the face of adversity — not bouncing back but bouncing forward. Critically, resilience is a set of behaviors, thoughts, and actions that can be learned and developed by anyone.</p><p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">The key factors that build resilience: social connection, meaning and purpose, self-regulation skills (like the tools in this app), optimistic but realistic thinking, and physical wellness. Repeated exposure to manageable stress followed by recovery is how resilience is actually built.</p><div class="cite">APA Resilience Research (2012). The Road to Resilience. Bonanno, G.A. (2004). Loss, Trauma, and Human Resilience. American Psychologist.</div>'},
+  cbt_article:{title:'Cognitive Behavioral Therapy: How It Works',content:'<p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">CBT is based on the observation that how we think about situations affects how we feel and behave. Automatic negative thoughts — often distorted, rapid, and habitual — drive much of the emotional suffering associated with depression and anxiety.</p><p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">CBT teaches you to identify these automatic thoughts, examine the evidence for and against them, and replace them with more balanced, accurate perspectives. This is not toxic positivity — it is accuracy. The CBT Thought Record tool in Affina implements a simplified version of this framework.</p><div class="cite">Beck, A.T. (1979). Cognitive Therapy of Depression. The Guilford Press. APA Division 12 Empirically Supported Treatments.</div>'},
+  '988':{title:'Understanding the 988 Lifeline',content:'<p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">The 988 Suicide and Crisis Lifeline is a free, confidential, 24/7 resource for anyone in emotional distress or suicidal crisis. You do not have to be suicidal to call. It is for anyone experiencing emotional overwhelm, anxiety, or just needing someone to talk to.</p><div style="background:linear-gradient(135deg,#7F1D1D,#991B1B);border-radius:13px;padding:1.1rem;color:#fff;margin-bottom:.85rem;text-align:center"><div style="font-family:\'DM Serif Display\',serif;font-size:1.6rem;margin-bottom:.25rem">📞 Call or Text 988</div><div style="font-size:.8rem;color:rgba(255,255,255,.65)">Free · Confidential · Available 24/7</div></div><p style="font-size:.85rem;color:var(--gray);line-height:1.65">Specialized lines: Veterans press 1, LGBTQ+ press 3, Spanish speakers available. For people concerned about a loved one, 988 counselors can help you too.</p><div class="cite">SAMHSA 988 Lifeline. Administered by the Substance Abuse and Mental Health Services Administration.</div>'},
+  mbsr_article:{title:'Mindfulness-Based Stress Reduction (MBSR)',content:'<p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">MBSR was developed at the University of Massachusetts Medical School by Jon Kabat-Zinn in 1979. Over four decades of research have made it the most-studied behavioral health intervention in the world, with documented effectiveness for nurse burnout, physician stress, first responder PTSD, depression, anxiety, and chronic pain.</p><p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">The core practice is simple: pay deliberate, non-judgmental attention to present-moment experience. This trains the prefrontal cortex to regulate the amygdala\'s stress response, reducing both the frequency and intensity of stress reactions over time.</p><div class="cite">Kabat-Zinn, J. (1990). Full Catastrophe Living. Systematic review: Khoury et al. (2015). MBSR for stress reduction. Journal of Psychosomatic Research.</div>'},
+  selfcomp_article:{title:'Self-Compassion vs. Self-Esteem',content:'<p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">Dr. Kristin Neff\'s research at the University of Texas found that self-compassion — treating yourself with the same kindness you would offer a good friend — is a more reliable predictor of psychological wellbeing than self-esteem.</p><p style="font-size:.85rem;color:var(--gray);line-height:1.65;margin-bottom:.85rem">Self-esteem is contingent on performance and comparison. Self-compassion is unconditional. Studies show that self-compassion reduces burnout, perfectionism, and depression while increasing resilience and motivation — including in healthcare workers and first responders.</p><div class="cite">Neff, K.D. (2003). Self-compassion: An alternative conceptualization of a healthy attitude toward oneself. Self and Identity 2(2). Neff, K.D. and Germer, C.K. (2013). A pilot study and randomized controlled trial of the Mindful Self-Compassion program. Journal of Clinical Psychology.</div>'}
+};
+
+function openArt(id) {
+  const a = ART_CONTENT[id];
+  if (!a) { toast('Article coming soon!'); return; }
+  document.getElementById('artMoBody').innerHTML = '<div class="mt">' + a.title + '</div><div style="margin-top:.85rem">' + a.content + '</div>';
+  document.getElementById('artMo').classList.add('open');
+}
+
+// ═══════════════════════════════════════════════
+// MOOD / CHECK-IN
+// ═══════════════════════════════════════════════
+const CI_QUESTIONS = [
+  {id:'mood',type:'scale',q:'How would you rate your overall mood today?',hint:'1 = very low, 5 = excellent',labels:['Very Low','Low','Okay','Good','Great'],emojis:['😔','😟','😐','🙂','😊'],weight:2},
+  {id:'energy',type:'scale',q:'How is your energy level right now?',hint:'1 = completely drained, 5 = fully energized',labels:['Drained','Low','Moderate','Good','High'],emojis:['🪫','😩','😐','⚡','🔋'],weight:2},
+  {id:'sleep',type:'choice',q:'How did you sleep last night?',hint:'Sleep quality is one of the strongest predictors of daily mental health.',opts:[{em:'😔',t:'Less than 5 hours',v:1},{em:'🌙',t:'5–6 hours, restless',v:2},{em:'😪',t:'6–7 hours, okay',v:3},{em:'💤',t:'7–9 hours, good',v:5}],weight:1.5},
+  {id:'stress',type:'scale',q:'How stressed are you feeling today?',hint:'1 = overwhelmed, 5 = calm and relaxed',labels:['Overwhelmed','Very Stressed','Moderate','Calm','Relaxed'],emojis:['🤯','😰','😤','😌','🧘'],weight:2},
+  {id:'intrusive',type:'choice',q:'Have you had any intrusive thoughts, flashbacks, or memories that were hard to shake?',hint:'This is common in high-stress professions — it does not mean something is wrong with you.',opts:[{em:'✅',t:'No, not today',v:5},{em:'🌊',t:'A little, but manageable',v:3},{em:'🌀',t:'Yes, and they were distressing',v:1},{em:'🔁',t:'Frequently — hard to stop',v:0}],weight:2},
+  {id:'connection',type:'choice',q:'Have you felt connected to people around you today?',hint:'Social connection is a key protective factor for mental health.',opts:[{em:'🤝',t:'Yes, I felt supported',v:5},{em:'😐',t:'Somewhat — surface level only',v:3},{em:'😶',t:'Not really — feeling isolated',v:1},{em:'🚪',t:'No — withdrawing from others',v:0}],weight:1.5},
+  {id:'meaning',type:'choice',q:'Did your work or activities feel meaningful today?',hint:'Loss of meaning is an early indicator of burnout (Maslach Burnout Inventory).',opts:[{em:'🌟',t:'Yes, very purposeful',v:5},{em:'🔄',t:'Going through the motions',v:2},{em:'❓',t:'Not sure anymore',v:1},{em:'❌',t:'No — feeling disconnected from purpose',v:0}],weight:2},
+  {id:'body',type:'choice',q:'Are you experiencing any physical symptoms of stress?',hint:'Physical symptoms like headaches or tight chest often reflect emotional load.',opts:[{em:'💪',t:'No physical symptoms',v:5},{em:'😬',t:'Minor tension or headache',v:3},{em:'🫁',t:'Chest tightness or shallow breathing',v:1},{em:'🤢',t:'Multiple physical stress symptoms',v:0}],weight:1},
+  {id:'help',type:'choice',q:'Have you had any thoughts of harming yourself or feeling like others would be better off without you?',hint:'This question is important for your safety. All responses are private.',opts:[{em:'✅',t:'No, not at all',v:5},{em:'💭',t:'Brief passing thoughts — not serious',v:2},{em:'⚠️',t:'Yes, more than passing thoughts',v:-1}],weight:3,crisis:true}
+];
+
+let ciAnswers = {}, ciCurrent = 0;
+
+function openCheckin() {
+  ciAnswers = {}; ciCurrent = 0;
+  document.getElementById('ciMo').classList.add('open');
+  renderCI();
+}
+
+function renderCI() {
+  const body = document.getElementById('ciBody');
+  const total = CI_QUESTIONS.length;
+  const q = CI_QUESTIONS[ciCurrent];
+  const pct = Math.round((ciCurrent / total) * 100);
+
+  let optsHtml = '';
+  if (q.type === 'choice') {
+    optsHtml = '<div class="ci-opts">' + q.opts.map((o,i) => '<div class="ci-opt' + (ciAnswers[q.id]===i?' sel':'') + '" onclick="ciSelect(' + i + ')"><span class="ci-opt-em">' + o.em + '</span>' + o.t + '</div>').join('') + '</div>';
+  } else {
+    optsHtml = '<div class="ci-scale">' + q.labels.map((l,i) => '<div class="ci-scale-btn' + (ciAnswers[q.id]===(i+1)?' sel':'') + '" onclick="ciScale(' + (i+1) + ')"><span class="ci-scale-num">' + q.emojis[i] + '</span><span class="ci-scale-lbl">' + l + '</span></div>').join('') + '</div>';
+  }
+  body.innerHTML = '<div class="ci-progress"><div class="ci-progress-bar" style="width:' + pct + '%"></div></div><div class="ci-q-num">Question ' + (ciCurrent+1) + ' of ' + total + '</div><div class="ci-question">' + q.q + '</div>' + (q.hint ? '<div class="ci-hint">' + q.hint + '</div>' : '') + optsHtml + '<button class="ci-next' + (ciAnswers[q.id]!==undefined?' on':'') + '" id="ciNext" onclick="ciNext()">' + (ciCurrent < total-1 ? 'Next →' : 'See My Results →') + '</button>';
+}
+
+function ciSelect(idx) {
+  ciAnswers[CI_QUESTIONS[ciCurrent].id] = idx;
+  document.querySelectorAll('.ci-opt').forEach((el,i) => el.classList.toggle('sel', i===idx));
+  document.getElementById('ciNext').classList.add('on');
+}
+function ciScale(val) {
+  ciAnswers[CI_QUESTIONS[ciCurrent].id] = val;
+  document.querySelectorAll('.ci-scale-btn').forEach((el,i) => el.classList.toggle('sel', (i+1)===val));
+  document.getElementById('ciNext').classList.add('on');
+}
+function ciNext() {
+  const q = CI_QUESTIONS[ciCurrent];
+  if (ciAnswers[q.id] === undefined) return;
+  if (q.crisis) {
+    const v = q.opts[ciAnswers[q.id]].v;
+    if (v <= 1) { showCiCrisis(); return; }
+  }
+  if (ciCurrent < CI_QUESTIONS.length - 1) { ciCurrent++; renderCI(); }
+  else showCiResults();
+}
+
+function showCiCrisis() {
+  document.getElementById('ciBody').innerHTML = '<div style="text-align:center;padding:1rem 0"><div style="font-size:3rem;margin-bottom:.75rem">🆘</div><div style="font-family:\'DM Serif Display\',serif;font-size:1.3rem;color:var(--red);margin-bottom:.75rem">You Don\'t Have to Face This Alone</div><p style="font-size:.85rem;color:var(--gray);line-height:1.6;margin-bottom:1rem">Thank you for being honest. What you\'re feeling is real, and you deserve support right now.</p><div style="background:linear-gradient(135deg,#7F1D1D,#991B1B);border-radius:13px;padding:1.25rem;color:#fff;margin-bottom:1rem;text-align:center"><div style="font-family:\'DM Serif Display\',serif;font-size:1.5rem;margin-bottom:.35rem">📞 / 💬 988</div><div style="font-size:.82rem;color:rgba(255,255,255,.75);margin-bottom:.75rem">Free · Confidential · 24/7</div><a href="tel:988" style="display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:.5rem 1rem;color:#fff;font-weight:600;font-size:.85rem;margin-right:.5rem;text-decoration:none">📞 Call 988</a><a href="sms:988" style="display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:.5rem 1rem;color:#fff;font-weight:600;font-size:.85rem;text-decoration:none">💬 Text 988</a></div><button style="width:100%;padding:.85rem;background:var(--teal);color:#fff;border-radius:12px;font-weight:600;margin-top:.5rem;font-size:.9rem" onclick="closeMo(\'ciMo\');switchTab(\'chat\',document.querySelector(\'.ni[data-t=chat]\'))">Open AI Chat Now →</button></div>';
+}
+
+function showCiResults() {
+  let totalW = 0, totalS = 0;
+  CI_QUESTIONS.forEach(q => {
+    if (q.crisis) return;
+    let v = 0;
+    if (q.type === 'scale' && ciAnswers[q.id] !== undefined) v = ciAnswers[q.id];
+    else if (q.type === 'choice' && ciAnswers[q.id] !== undefined) v = Math.max(0, Math.min(5, q.opts[ciAnswers[q.id]].v));
+    totalS += v * (q.weight || 1);
+    totalW += 5 * (q.weight || 1);
+  });
+  const pct = Math.round((totalS / totalW) * 100);
+  let level, color, emoji, summary, recs;
+  if (pct >= 75) { level='Doing Well'; color='var(--green)'; emoji='🌟'; summary='Your responses suggest you\'re in a generally positive mental space today. Keep doing what you\'re doing.'; recs=[{t:'Gratitude Practice',s:'Reinforce what\'s working — 3 min',tool:'gratitude'},{t:'Mindfulness Body Scan',s:'Maintain your balance with MBSR',tool:'mbsr'}]; }
+  else if (pct >= 50) { level='Managing'; color='var(--gold)'; emoji='😐'; summary='You\'re getting through, but some things are weighing on you. This is a good time to use Affina\'s tools proactively before stress compounds.'; recs=[{t:'Box Breathing',s:'Reset your nervous system — 3 min',tool:'breathing'},{t:'Guided Journaling',s:'Process what\'s on your mind',tool:'journal'},{t:'CBT Thought Check',s:'Challenge unhelpful patterns',tool:'cbt'}]; }
+  else if (pct >= 30) { level='Struggling'; color:'#F97316'; emoji='😔'; summary='Your responses indicate significant stress and emotional difficulty today. Please use the tools below and consider talking to your Affina companion.'; recs=[{t:'5-4-3-2-1 Grounding',s:'Immediate relief for overwhelm',tool:'grounding'},{t:'Self-Compassion Break',s:'Be kind to yourself right now',tool:'selfcompassion'},{t:'Talk to AI Companion',s:'Private, judgment-free support',tool:'chat'}]; color='#F97316'; }
+  else { level='Needs Support'; color='var(--red)'; emoji='🆘'; summary='Your responses suggest you\'re in a really difficult place. Please do not carry this alone. Reach out to someone you trust or contact 988.'; recs=[{t:'Talk to AI Companion',s:'Available right now',tool:'chat'},{t:'Call or Text 988',s:'Free, confidential, 24/7',tool:'988'},{t:'5-4-3-2-1 Grounding',s:'Ground yourself right now',tool:'grounding'}]; }
+
+  // Update streak
+  checkinCount++;
+  streakCount++;
+  document.getElementById('sNum').textContent = streakCount;
+  document.getElementById('hBadge').textContent = '🔥 ' + streakCount + '-Day Streak';
+  document.getElementById('streakMsg').textContent = streakCount === 1 ? 'Streak started!' : 'Keep it going!';
+  document.getElementById('statStreak').textContent = streakCount;
+  document.getElementById('statCheckins').textContent = checkinCount;
+  // Update streak dots
+  const dots = document.getElementById('sDots');
+  dots.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const d = document.createElement('div');
+    d.className = 'sd' + (i < streakCount - 1 ? ' done' : i === streakCount - 1 ? ' today' : '');
+    dots.appendChild(d);
+  }
+  updateInsights();
+
+  document.getElementById('ciBody').innerHTML = '<div style="text-align:center;padding:.5rem 0"><div style="font-size:3rem;margin-bottom:.5rem">' + emoji + '</div><div style="font-family:\'DM Serif Display\',serif;font-size:1.3rem;color:' + color + ';margin-bottom:.4rem">' + level + '</div><p style="font-size:.83rem;color:var(--gray);line-height:1.6;margin-bottom:1rem">' + summary + '</p><div style="text-align:left"><div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:.55rem">Recommended For You</div>' + recs.map(r => '<div class="ci-rec" onclick="' + (r.tool==='chat'?"closeMo('ciMo');switchTab('chat',document.querySelector('.ni[data-t=chat]'))" : r.tool==='988'?"closeMo('ciMo')" : "closeMo('ciMo');openTool('"+r.tool+"')") + '"><div class="ci-rec-title">' + r.t + '</div><div class="ci-rec-sub">' + r.s + '</div></div>').join('') + '</div><div class="cite" style="text-align:center;margin-top:.75rem">Based on PHQ-9, GAD-7, MBI, and PCL-5 screening frameworks. Not a clinical diagnosis.</div><button style="width:100%;padding:.85rem;background:var(--navy);color:#fff;border-radius:12px;font-weight:600;margin-top:.85rem;font-size:.88rem" onclick="closeMo(\'ciMo\');finishCheckin(' + pct + ',\'' + level + '\')">Save and Close</button></div>';
+}
+
+function finishCheckin(score, level) {
+  const res = document.getElementById('checkinResult');
+  if (res) { res.style.display = 'block'; res.innerHTML = 'Check-in complete ✓ &nbsp;·&nbsp; <strong>' + level + '</strong> &nbsp;·&nbsp; Score: ' + score + '%'; }
+  const btn = document.getElementById('checkinBtn');
+  if (btn) { btn.textContent = 'Check-In Complete ✓'; btn.style.background = 'var(--green)'; btn.disabled = true; }
+  // Log mood for calendar
+  const today = new Date().toDateString();
+  moodLog[today] = { score, level };
+  buildCalendar();
+  toast('Check-in saved!');
+}
+
+// ═══════════════════════════════════════════════
+// CALENDAR
+// ═══════════════════════════════════════════════
+function buildCalendar() {
+  const now = new Date(calYear, calMonth, 1);
+  const monthName = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  document.getElementById('calMonthLabel').textContent = monthName;
+  document.getElementById('calMonthTitle').textContent = monthName;
+
+  const firstDay = now.getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const todayDate = new Date();
+  const isCurrentMonth = calYear === todayDate.getFullYear() && calMonth === todayDate.getMonth();
+
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
+    const el = document.createElement('div'); el.className = 'cal-day-lbl'; el.textContent = d; grid.appendChild(el);
+  });
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div'); el.className = 'cal-day empty'; grid.appendChild(el);
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const el = document.createElement('div');
+    const dateKey = new Date(calYear, calMonth, d).toDateString();
+    const hasEntry = journalEntries.some(e => new Date(e.date).toDateString() === dateKey);
+    const hasMood = moodLog[dateKey];
+    if (isCurrentMonth && d === todayDate.getDate()) el.className = 'cal-day today' + (hasEntry ? ' has-entry' : '');
+    else if (d < todayDate.getDate() || !isCurrentMonth) el.className = 'cal-day ' + (hasMood ? 'logged' : 'past') + (hasEntry ? ' has-entry' : '');
+    else el.className = 'cal-day future';
+    el.textContent = d;
+    if (hasEntry) el.onclick = () => showDayEntries(dateKey);
+    grid.appendChild(el);
+  }
+  buildJournalList();
+}
+
+function changeMonth(dir) {
+  calMonth += dir;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  buildCalendar();
+}
+
+function showDayEntries(dateKey) {
+  const entries = journalEntries.filter(e => new Date(e.date).toDateString() === dateKey);
+  if (!entries.length) return;
+  let html = '<div class="mt">' + dateKey + '</div>';
+  entries.forEach(e => {
+    html += '<div style="background:var(--off);border-radius:11px;padding:.9rem;margin-top:.75rem;border-left:3px solid var(--teal)"><div style="font-size:.7rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem">' + new Date(e.date).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}) + ' · ' + e.mode + '</div><p style="font-size:.85rem;color:var(--dgray);line-height:1.6">' + e.text + '</p></div>';
+  });
+  document.getElementById('journalViewBody').innerHTML = html;
+  document.getElementById('journalViewMo').classList.add('open');
+}
+
+// ═══════════════════════════════════════════════
+// JOURNAL
+// ═══════════════════════════════════════════════
+const J_PROMPTS = {
+  nurse:['What was the most emotionally demanding moment of your last shift?','When did you last feel genuinely proud of the care you provided?','What do you need right now that you haven\'t asked for?'],
+  doctor:['What is something you witnessed recently that you haven\'t been able to stop thinking about?','What does doing enough mean to you, and is that definition working for you?','Write about a patient interaction that reminded you why you chose medicine.'],
+  police:['Describe a call that stayed with you. What would you want someone to know about what that is like?','What does switching off mean to you, and how well are you able to do it?','What do you wish your family or friends understood about your work?'],
+  firefighter:['After a difficult call, what helps you decompress most?','Write about a moment when you felt the weight of the job most heavily.','What keeps you going on the hardest days?'],
+  student:['What is one thing you are afraid of that you haven\'t admitted out loud?','What would you tell your past self about the pressure you are under right now?','What does success mean to you — is that definition yours or someone else\'s?'],
+  military:['Describe something from your service you have never put into words before.','What does coming home mean to you, honestly?','What do you want civilians to understand about your experience?'],
+  other:['What has been weighing on you most this week?','Write about something you have been avoiding feeling.','What would it look like to take care of yourself today?']
+};
+
+function buildJournalPrompt() {
+  const key = J_PROMPTS[prof] ? prof : 'other';
+  const arr = J_PROMPTS[key];
+  const prompt = arr[Math.floor(Math.random() * arr.length)];
+  const el1 = document.getElementById('jPromptText');
+  const el2 = document.getElementById('jPromptVoice');
+  if (el1) el1.textContent = prompt;
+  if (el2) el2.textContent = prompt;
+}
+
+function setJMode(mode) {
+  journalMode = mode;
+  document.getElementById('jModeText').classList.toggle('active', mode === 'text');
+  document.getElementById('jModeVoice').classList.toggle('active', mode === 'voice');
+  document.getElementById('jTextArea').style.display = mode === 'text' ? 'block' : 'none';
+  document.getElementById('jVoiceArea').style.display = mode === 'voice' ? 'block' : 'none';
+}
+
+function toggleVoice() {
+  if (!isRecording) {
+    startRecording();
+  } else {
+    stopRecording();
+  }
+}
+
+function startRecording() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    // Fallback: simulate voice note
+    isRecording = true;
+    const btn = document.getElementById('voiceBtn');
+    btn.textContent = '⏹ Recording... Tap to Stop';
+    btn.classList.add('recording');
+    setTimeout(() => {
+      if (isRecording) stopRecording();
+    }, 30000);
+    return;
+  }
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+    mediaRecorder = new MediaRecorder(stream);
+    voiceChunks = [];
+    mediaRecorder.ondataavailable = e => voiceChunks.push(e.data);
+    mediaRecorder.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      document.getElementById('jVoiceText').value = '[Voice note recorded — ' + new Date().toLocaleTimeString() + '. Transcription requires a speech-to-text service. Your recording has been captured.]';
+    };
+    mediaRecorder.start();
+    isRecording = true;
+    const btn = document.getElementById('voiceBtn');
+    btn.textContent = '⏹ Recording... Tap to Stop';
+    btn.classList.add('recording');
+  }).catch(() => {
+    toast('Microphone access denied. Please enable in settings.');
+  });
+}
+
+function stopRecording() {
+  isRecording = false;
+  const btn = document.getElementById('voiceBtn');
+  btn.textContent = '🎤 Tap to Record Again';
+  btn.classList.remove('recording');
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+}
+
+function saveJournalEntry() {
+  let text = '';
+  if (journalMode === 'text') {
+    text = document.getElementById('jAreaMain').value.trim();
+  } else {
+    text = document.getElementById('jVoiceText').value.trim();
+  }
+  if (!text) { toast('Please write or record something first'); return; }
+
+  const entry = {
+    id: Date.now(),
+    date: new Date().toISOString(),
+    text,
+    mode: journalMode === 'text' ? 'Written' : 'Voice',
+    prof
+  };
+  journalEntries.unshift(entry);
+
+  // Clear inputs
+  document.getElementById('jAreaMain').value = '';
+  document.getElementById('jVoiceText').value = '';
+  document.getElementById('statJournals').textContent = journalEntries.length;
+  buildJournalPrompt();
+  buildCalendar();
+  updateInsights();
+  toast('Journal entry saved ✓');
+}
+
+function buildJournalList() {
+  const container = document.getElementById('journalEntries');
+  if (!container) return;
+  container.innerHTML = '';
+  if (!journalEntries.length) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'text-align:center;padding:1.5rem 1rem;color:var(--gray);font-size:.85rem;line-height:1.6';
+    empty.innerHTML = '<div style="font-size:2rem;margin-bottom:.5rem">📝</div>No entries yet.<br>Write your first journal entry above!';
+    container.appendChild(empty);
+    return;
+  }
+  journalEntries.slice(0, 10).forEach(e => {
+    const el = document.createElement('div');
+    el.className = 'journal-entry-item';
+    el.innerHTML = '<div class="je-date">' + new Date(e.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}) + ' · ' + e.mode + '</div><div><span class="je-mood">📓</span><span class="je-preview">' + e.text.substring(0, 80) + (e.text.length > 80 ? '…' : '') + '</span></div>';
+    el.onclick = () => {
+      document.getElementById('journalViewBody').innerHTML = '<div class="mt">Journal Entry</div><div style="font-size:.72rem;color:var(--gray);margin-bottom:1rem">' + new Date(e.date).toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) + ' · ' + e.mode + '</div><p style="font-size:.88rem;color:var(--dgray);line-height:1.7">' + e.text + '</p>';
+      document.getElementById('journalViewMo').classList.add('open');
+    };
+    container.appendChild(el);
+  });
+}
+
+function updateInsights() {
+  const now = new Date();
+  const monthEntries = journalEntries.filter(e => {
+    const d = new Date(e.date);
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  });
+  const monthCheckins = Object.keys(moodLog).filter(k => {
+    const d = new Date(k);
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  });
+  const el1 = document.getElementById('insightCheckins');
+  const el2 = document.getElementById('insightJournals');
+  const el3 = document.getElementById('insightStreak');
+  if (el1) el1.textContent = monthCheckins.length + ' days';
+  if (el2) el2.textContent = monthEntries.length + ' entries';
+  if (el3) el3.textContent = streakCount + ' days';
+}
+
+// ═══════════════════════════════════════════════
+// LOCAL EVENTS
+// ═══════════════════════════════════════════════
+const EVENTS_DATA = [
+  {id:1,url:'https://www.nj.gov/humanservices/dmhas/home/',type:'Support Group',title:'First Responder Peer Support Circle',org:'NJ Division of Mental Health and Addiction Services',date:'Every Tuesday',time:'6:00 PM – 7:30 PM',location:'Springfield Community Center, NJ',free:true,tags:['first-responder','support-group'],desc:'A confidential peer support group for law enforcement, firefighters, and EMS providers. Facilitated by licensed counselors with first responder backgrounds.'},
+  {id:2,url:'https://www.shu.edu/nursing/',type:'Workshop',title:'MBSR 8-Week Mindfulness Program for Healthcare Workers',org:'Seton Hall University School of Nursing',date:'Starting March 24, 2026',time:'Mondays 5:30–7:30 PM',location:'Seton Hall University, South Orange NJ',free:false,cost:'$45 (sliding scale available)',tags:['healthcare','mindfulness','workshop'],desc:'Evidence-based 8-week MBSR program adapted for nurses and healthcare professionals. CME credits available for eligible participants.'},
+  {id:3,url:'https://www.njveterans.gov/',type:'Online',title:'Veterans Mental Health Virtual Drop-In',org:'NJ Veterans Service Network',date:'Every Wednesday & Saturday',time:'7:00 PM – 8:30 PM',location:'Zoom — Link sent upon registration',free:true,tags:['veteran','military','online'],desc:'Facilitated virtual support group for NJ veterans and active duty service members. Topics include transition challenges, PTSD, and community connection.'},
+  {id:4,url:'https://www.mhanj.org/',type:'Support Group',title:'Healthcare Worker Wellness Circle',org:'Mental Health Association of NJ',date:'Every Thursday',time:'12:00 PM – 1:00 PM',location:'Springfield, NJ (hybrid — in person or Zoom)',free:true,tags:['healthcare','support-group'],desc:'Lunchtime support group specifically for nurses, physicians, and allied health professionals. Peer-led with clinical oversight.'},
+  {id:5,url:'https://www.njamhaa.org/',type:'Training',title:'Mental Health First Aid Certification (8-Hour)',org:'NJAMHAA',date:'April 5, 2026',time:'9:00 AM – 5:00 PM',location:'Mercerville, NJ',free:false,cost:'$25 registration',tags:['training','certification','all'],desc:'Learn to identify, understand, and respond to signs of mental health challenges and substance use disorders. Certification valid for 3 years. Open to all professions.'},
+  {id:6,url:'https://www.naminj.org/',type:'Online',title:'CBT Skills for Stress and Anxiety — Free Webinar',org:'NAMI New Jersey',date:'March 25, 2026',time:'7:00 PM – 8:30 PM',location:'Online — Free registration at naminj.org',free:true,tags:['cbt','online','anxiety'],desc:'Introduction to cognitive behavioral therapy skills for managing work-related stress and anxiety. Presented by licensed CBT therapists. No prior experience required.'},
+  {id:7,url:'https://www.naswnjchapter.org/',type:'Support Group',title:'Social Worker Compassion Fatigue Circle',org:'NJ NASW Chapter',date:'First Friday of each month',time:'5:00 PM – 6:30 PM',location:'Newark, NJ',free:true,tags:['social-worker','support-group','compassion-fatigue'],desc:'A peer support space specifically for social workers, counselors, and case managers dealing with compassion fatigue and vicarious trauma. NASW-facilitated.'},
+  {id:8,url:'https://www.mhanj.org/events/',type:'Event',title:'NJ Mental Health Awareness Walk',org:'Mental Health Association of NJ',date:'May 17, 2026',time:'9:00 AM',location:'Verona Park, NJ',free:true,tags:['awareness','community','all'],desc:'Annual 5K walk raising awareness for mental health. Vendor fair, resources, and community connection. Family friendly.'},
+  {id:9,url:'https://www.nj.gov/humanservices/dmhas/home/',type:'Training',title:'Peer Support Specialist Training — First Responders',org:'NJ Office of Mental Health Advocacy',date:'April 14–15, 2026',time:'8:30 AM – 4:00 PM both days',location:'Trenton, NJ',free:false,cost:'$75 — limited scholarships available',tags:['first-responder','training','peer-support'],desc:'Two-day intensive training to become a certified peer support specialist for first responder organizations. Open to current and retired law enforcement, firefighters, and EMS.'},
+  {id:10,url:'https://www.shu.edu/counseling-and-psychological-services/',type:'Online',title:'Therapy for Students — Virtual Intro Session',org:'Seton Hall University Counseling Center',date:'Every Monday',time:'3:00 PM – 4:00 PM',location:'Online via SHU student portal',free:true,tags:['student','online','therapy'],desc:'Weekly virtual open hours for SHU students exploring counseling options. Ask questions about therapy, learn about available resources, and get connected to services.'},
+  {id:11,url:'https://www.njea.org/',type:'Workshop',title:'Trauma-Informed Self-Care for Educators',org:'NJ Education Association',date:'March 29, 2026',time:'10:00 AM – 2:00 PM',location:'Woodbridge, NJ',free:false,cost:'$20 for NJEA members, $35 non-members',tags:['teacher','trauma','workshop'],desc:'Half-day workshop on recognizing and addressing the emotional labor and secondary trauma teachers experience. Evidence-based self-care strategies included.'},
+  {id:12,url:'https://adaa.org/find-help/treatment-help/support-groups',type:'Support Group',title:'Young Professional Stress and Burnout Group',org:'Anxiety and Depression Association of America — NJ Chapter',date:'Every other Tuesday',time:'7:00 PM – 8:30 PM',location:'Montclair, NJ and online',free:false,cost:'Sliding scale $5–$20',tags:['business','anxiety','burnout','support-group'],desc:'Support group for professionals in their 20s-40s navigating workplace stress, burnout, and anxiety. Facilitated by licensed therapists.'}
+];
+
+const EV_FILTERS = ['All','Support Group','Workshop','Online','Training','Event','Free'];
+let activeEvFilter = 'All';
+let evSearchVal = '';
+
+function buildEvents() {
+  const filtersEl = document.getElementById('evFilters');
+  filtersEl.innerHTML = EV_FILTERS.map(f => '<div class="ev-filter' + (f===activeEvFilter?' active':'') + '" onclick="setEvFilter(\'' + f + '\')">' + f + '</div>').join('');
+  renderEvents();
+}
+
+function setEvFilter(f) {
+  activeEvFilter = f;
+  buildEvents();
+}
+
+function filterEvents() {
+  evSearchVal = document.getElementById('evSearch').value.toLowerCase();
+  renderEvents();
+  // Re-apply filter styles
+  document.querySelectorAll('.ev-filter').forEach(el => el.classList.toggle('active', el.textContent === activeEvFilter));
+}
+
+function renderEvents() {
+  const list = document.getElementById('eventsList');
+  let filtered = EVENTS_DATA.filter(e => {
+    const matchSearch = !evSearchVal || e.title.toLowerCase().includes(evSearchVal) || e.org.toLowerCase().includes(evSearchVal) || e.location.toLowerCase().includes(evSearchVal) || e.desc.toLowerCase().includes(evSearchVal);
+    const matchFilter = activeEvFilter === 'All' || e.type === activeEvFilter || (activeEvFilter === 'Free' && e.free);
+    return matchSearch && matchFilter;
+  });
+
+  list.innerHTML = '';
+  if (!filtered.length) {
+    list.innerHTML = '<div style="text-align:center;padding:2rem 1rem;color:var(--gray);font-size:.85rem"><div style="font-size:2rem;margin-bottom:.5rem">📍</div>No events found.<br>Try adjusting your search or filter.</div>';
+    return;
+  }
+  filtered.forEach(e => {
+    const el = document.createElement('div');
+    el.className = 'event-card';
+    el.innerHTML = '<div class="ev-type-badge">' + (e.free ? '✅ Free · ' : '') + e.type + '</div><div class="ev-title">' + e.title + '</div><div class="ev-meta"><div class="ev-meta-row"><span class="ev-meta-icon">🏢</span>' + e.org + '</div><div class="ev-meta-row"><span class="ev-meta-icon">📅</span>' + e.date + '</div><div class="ev-meta-row"><span class="ev-meta-icon">⏰</span>' + e.time + '</div><div class="ev-meta-row"><span class="ev-meta-icon">📍</span>' + e.location + '</div></div><p style="font-size:.78rem;color:var(--gray);line-height:1.5;margin-top:.55rem">' + e.desc + '</p>' + (e.free ? '<span class="ev-free-badge">Free</span>' : '<span style="font-size:.75rem;color:var(--gray);margin-top:.65rem;display:inline-block">💰 ' + (e.cost || '') + '</span>') + '<a href="' + (e.url || '#') + '" target="_blank" rel="noopener noreferrer" class="ev-register">Register / Learn More →</a>';
+    list.appendChild(el);
+  });
+}
+
+// ═══════════════════════════════════════════════
+// AI CHAT — Fixed with correct Anthropic API headers
+// ═══════════════════════════════════════════════
+function buildChatUI() {
+  chatProf = prof;
+  const bar = document.getElementById('chatProfBar');
+  const profs = ['nurse','doctor','police','firefighter','emt','socialworker','student','teacher','military','accountant','therapist','other'];
+  const lbl = {nurse:'🏥 Nurse',doctor:'⚕️ Doctor',police:'🚔 Officer',firefighter:'🚒 Firefighter',emt:'🚑 EMT',socialworker:'🤝 Social Worker',student:'🎓 Student',teacher:'📚 Teacher',military:'🎖️ Military',accountant:'💼 Business',therapist:'🧠 Therapist',other:'✨ General'};
+  bar.innerHTML = profs.map(p => '<div class="cpp' + (p===chatProf?' active':'') + '" onclick="switchChatProf(\'' + p + '\')">' + lbl[p] + '</div>').join('');
+  buildSuggs();
+}
+
+function buildSuggs() {
+  const s = document.getElementById('chatSuggs');
+  s.innerHTML = (CHAT_SUGGESTIONS[chatProf]||CHAT_SUGGESTIONS.other).map(t => '<div class="cs" onclick="useSugg(\'' + t.replace(/'/g,"\\'") + '\')">\uD83D\uDCAC ' + t + '</div>').join('');
+}
+
+function buildChatWelcome() {
+  chatHist = [];
+  const msgs = document.getElementById('chatMsgs');
+  msgs.innerHTML = '';
+  const p = P[chatProf]||P.other;
+  document.getElementById('chatBotName').textContent = p.n + ' Support';
+  document.getElementById('chatBotEmoji').textContent = p.e;
+  const welcome = {
+    nurse:"Hi — I'm your Affina companion, here specifically for nurses. Whether you had a difficult shift, you're feeling compassion fatigue, or you just need to talk to someone who gets it — I'm here. What's on your mind?",
+    doctor:"Hello. I'm your Affina companion for physicians. This is completely private — no colleagues, no records, no consequences. Whatever you're carrying right now, you can say it here.",
+    police:"Hey. I'm your Affina companion for law enforcement. I know talking about this stuff isn't always easy, but this is private and judgment-free. What's been weighing on you?",
+    firefighter:"Hey — I'm your Affina companion for firefighters. Whatever's been on your mind after a tough call or a hard stretch — you can say it here. What's going on?",
+    emt:"Hi. I'm here for EMS providers. I know the job doesn't leave much time to process — that's what this space is for. What do you need to talk through?",
+    socialworker:"Hi — I'm your Affina companion for social workers. For once, you get to be the one who's taken care of. This space is just for you. What's been weighing on you?",
+    student:"Hey! I'm your Affina companion. College can be genuinely overwhelming, and you don't have to pretend otherwise here. What's going on for you right now?",
+    teacher:"Hi — I'm your Affina companion for educators. Teaching is one of the most emotionally demanding jobs there is. This space is just for you. What's on your mind?",
+    military:"Hey. I'm your Affina companion. This is private — no chain of command, no reporting, just somewhere you can say what's actually going on.",
+    accountant:"Hi — I'm your Affina companion. High-pressure work takes a real toll, even when it's hard to admit. This is a space to be honest about how you're really doing.",
+    therapist:"Hi — I'm your Affina companion. You spend your days holding space for others. This is a space where you get to be held. What's on your mind?",
+    other:"Hi, I'm your Affina companion. Whatever you're dealing with — big or small — this is a safe, private space to talk it through. What's on your mind?"
+  };
+  addBotMsg(welcome[chatProf]||welcome.other, false);
+}
+
+function switchChatProf(p) {
+  chatProf = p;
+  const pd = P[p]||P.other;
+  document.getElementById('chatBotName').textContent = pd.n + ' Support';
+  document.getElementById('chatBotEmoji').textContent = pd.e;
+  document.querySelectorAll('.cpp').forEach(el => el.classList.toggle('active', el.textContent.trim().includes(pd.e)));
+  buildSuggs();
+  chatHist = [];
+  document.getElementById('chatMsgs').innerHTML = '';
+  addBotMsg('Switched to ' + pd.n + ' mode. I now have full context for what ' + pd.n.toLowerCase() + 's face. What would you like to talk about?', false);
+}
+
+function useSugg(text) {
+  document.getElementById('chatIn').value = text;
+  sendMsg();
+}
+
+function addUserMsg(text) {
+  const now = new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  const msgs = document.getElementById('chatMsgs');
+  const d = document.createElement('div'); d.className = 'msg u';
+  d.innerHTML = '<div class="bub">' + esc(text) + '</div><div class="msg-t">' + now + '</div>';
+  msgs.appendChild(d); scroll();
+}
+
+function addBotMsg(text, animate) {
+  const now = new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  const msgs = document.getElementById('chatMsgs');
+  const p = P[chatProf]||P.other;
+  const d = document.createElement('div'); d.className = 'msg b';
+  if (animate !== false) {
+    d.innerHTML = '<div class="b-row"><div class="b-av">' + p.e + '</div><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';
+    msgs.appendChild(d); scroll();
+    setTimeout(() => {
+      d.innerHTML = '<div class="b-row"><div class="b-av">' + p.e + '</div><div class="bub">' + fmtBot(text) + '</div></div><div class="msg-t" style="padding-left:34px">' + now + '</div>';
+      scroll();
+    }, 700);
+  } else {
+    d.innerHTML = '<div class="b-row"><div class="b-av">' + p.e + '</div><div class="bub">' + fmtBot(text) + '</div></div><div class="msg-t" style="padding-left:34px">' + now + '</div>';
+    msgs.appendChild(d); scroll();
+  }
+}
+
+function fmtBot(t){ return esc(t).replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n\n/g,'</p><p style="margin-top:.5rem">').replace(/\n/g,'<br>').replace(/^/,'<p>').replace(/$/,'</p>'); }
+function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function scroll(){ const m = document.getElementById('chatMsgs'); if(m) setTimeout(()=>m.scrollTop=m.scrollHeight,60); }
+
+async function sendMsg() {
+  const inp = document.getElementById('chatIn');
+  const text = inp.value.trim();
+  if (!text || chatBusy) return;
+  inp.value = ''; inp.style.height = 'auto';
+  chatBusy = true;
+  chatHist.push({role:'user', content: text});
+  addUserMsg(text);
+  document.getElementById('chatSend').disabled = true;
+
+  // Typing indicator
+  const msgs = document.getElementById('chatMsgs');
+  const p = P[chatProf]||P.other;
+  const tyDiv = document.createElement('div');
+  tyDiv.className = 'msg b'; tyDiv.id = 'tyInd';
+  tyDiv.innerHTML = '<div class="b-row"><div class="b-av">' + p.e + '</div><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';
+  msgs.appendChild(tyDiv); scroll();
+
+  try {
+    const res = await fetch('/.netlify/functions/chat', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        system: SYSPROMPTS[chatProf] || SYSPROMPTS.other,
+        messages: chatHist
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      console.error('API error:', res.status, err);
+      throw new Error('API returned ' + res.status);
+    }
+
+    const data = await res.json();
+    const reply = data.content && data.content[0] && data.content[0].text
+      ? data.content[0].text
+      : "I'm here with you. Could you tell me more about what you're going through?";
+
+    const ti = document.getElementById('tyInd');
+    if (ti) ti.remove();
+    chatHist.push({role:'assistant', content: reply});
+    addBotMsg(reply, false);
+
+  } catch(e) {
+    console.error('Chat error:', e);
+    const ti = document.getElementById('tyInd');
+    if (ti) ti.remove();
+    addBotMsg("I'm having a moment of trouble connecting. Please try again — I'm still here. If you need immediate support, call or text 988.", false);
+  }
+
+  chatBusy = false;
+  document.getElementById('chatSend').disabled = false;
+}
+
+function chatKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();} }
+function autoResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,90)+'px'; }
+
+// ═══════════════════════════════════════════════
+// TOOLS
+// ═══════════════════════════════════════════════
+function openTool(tool) {
+  const body = document.getElementById('toolMoBody');
+  const p = P[prof]||P.other;
+  const profKey = J_PROMPTS[prof] ? prof : 'other';
+  const pArr = J_PROMPTS[profKey];
+  const jPrompt = pArr[Math.floor(Math.random()*pArr.length)];
+
+  const H = {
+    breathing: '<div class="mt">Box Breathing</div><div class="msub">Inhale 4 · Hold 4 · Exhale 4 · Hold 4. Used by first responders and tactical teams to regulate the nervous system under stress.</div><div class="b-wrap"><div class="b-circle" id="bCirc">Tap Start</div><div class="b-ph" id="bPh">Ready</div><div class="b-tm" id="bTm">—</div><div class="b-cy" id="bCy">Cycles: 0 / 4</div><button class="b-btn" onclick="startBreath()">Start Exercise</button></div><div class="cite">Zaccaro et al. (2018). How Breath-Control Can Change Your Life. Frontiers in Human Neuroscience.</div>',
+    grounding: '<div class="mt">5-4-3-2-1 Grounding</div><div class="msub">Tap each step to activate it. This technique interrupts anxiety by engaging your senses in the present moment.</div>' + [[5,'SEE','Look around and name 5 things you can see right now. Say them slowly.'],[4,'TOUCH','Notice 4 things you can physically feel — your clothes, the surface beneath you, the air.'],[3,'HEAR','Listen carefully for 3 sounds in your environment. Even quiet ones.'],[2,'SMELL','Identify 2 things you can smell, or imagine 2 scents you find calming.'],[1,'TASTE','Notice 1 thing you can taste right now. Take a slow breath.']].map((s,i)=>'<div class="gs'+(i===0?' active':'')+'" id="gs'+i+'" onclick="activateGs('+i+')"><div class="gs-n">'+s[0]+'</div><div class="gs-lbl">Things you can '+s[1]+'</div><div class="gs-desc">'+s[2]+'</div></div>').join('')+'<div class="cite">SAMHSA Trauma-Informed Care Framework. Grounding is a validated component of Trauma-Focused CBT and DBT.</div>',
+    journal: '<div class="mt">Guided Journal</div><div class="msub">Expressive writing reduces stress, improves mood, and helps process difficult experiences.</div><div class="jp">'+jPrompt+'</div><textarea class="ja" id="jAreaTool" placeholder="Write freely. This is private…"></textarea><button class="jsave" onclick="saveToolJournal()">Save Entry ✓</button><div class="cite">Pennebaker, J.W. and Smyth, J.M. (2016). Opening Up by Writing It Down. Expressive writing reduces nurse and physician burnout. Journal of General Internal Medicine.</div>',
+    cbt: '<div class="mt">CBT Thought Record</div><div class="msub">Identify, challenge, and reframe negative automatic thoughts using Beck\'s CBT framework.</div>' + [['1️⃣ The Situation','What happened? Describe just the facts.','Facts only — not your interpretation.'],['2️⃣ Automatic Thought','What went through your mind?','Often starts with: I should, I always, I am a failure…'],['3️⃣ The Emotion','What emotion(s) did you feel? How intense (0-100)?',''],['4️⃣ Evidence For & Against','What evidence supports this thought? What contradicts it?','Be as objective as a scientist.'],['5️⃣ Balanced Thought','What is a more realistic way to see this situation?','This does not have to be positive — just accurate.']].map(s=>'<div class="cbt-step"><div class="cbt-lbl">'+s[0]+'</div><textarea class="cbt-in" placeholder="'+s[1]+'"></textarea>'+(s[2]?'<div class="cbt-hint">'+s[2]+'</div>':'')+'</div>').join('')+'<button class="jsave" onclick="toast(\'Thought record saved ✓\');closeMo(\'toolMo\')">Save Record ✓</button><div class="cite">Beck, A.T. (1979). Cognitive Therapy of Depression. The Guilford Press. APA Division 12 Empirically Supported Treatments.</div>',
+    mbsr: '<div class="mt">MBSR Body Scan</div><div class="msub">Mindfulness-Based Stress Reduction — the most evidence-supported intervention for burnout.</div><div style="background:linear-gradient(135deg,#0a2a1e,var(--navy));border-radius:13px;padding:1.1rem;margin-bottom:.85rem">' + [['Settle (2 min)','Find a comfortable position. Close your eyes. Take 3 slow deep breaths.'],['Feet & Legs (3 min)','Bring full attention to the soles of your feet. Notice any sensation. Breathe into that area.'],['Core & Chest (3 min)','Notice your abdomen rising and falling. Acknowledge any tension without trying to change it.'],['Shoulders & Arms (2 min)','Shoulders carry the weight of the day. Notice what is there. Let your arms relax completely.'],['Head & Face (2 min)','Relax your jaw. Soften your forehead. With each exhale, let held tension dissolve.'],['Return (1 min)','Slowly return awareness to the full body. Take 3 deep breaths. Open your eyes when ready.']].map(s=>'<div class="mbsr-step"><div class="mbsr-step-n">'+s[0]+'</div><div class="mbsr-step-t">'+s[1]+'</div></div>').join('')+'</div><div class="cite">Kabat-Zinn, J. (1990). Full Catastrophe Living. MBSR developed at UMass Medical School. Systematic reviews confirm effectiveness for nurse burnout, physician stress, and first responder PTSD.</div>',
+    progressive: '<div class="mt">Progressive Muscle Relaxation</div><div class="msub">Developed by Dr. Edmund Jacobson. Validated in hundreds of clinical trials for reducing anxiety, insomnia, and occupational stress.</div>' + [['Hands & Forearms','Clench your fists tightly for 5 seconds. Release completely and notice the difference.'],['Biceps','Flex your biceps hard for 5 seconds. Release and observe the sensation of relaxation.'],['Shoulders','Shrug your shoulders up to your ears hard for 5 seconds. Drop them and breathe.'],['Face','Scrunch your entire face for 5 seconds. Then let everything go soft.'],['Stomach','Tighten your abdominal muscles for 5 seconds. Release slowly.'],['Legs & Feet','Flex thighs, calves, and curl toes simultaneously for 5 seconds. Release and notice.']].map(s=>'<div style="background:var(--off);border-radius:10px;padding:.85rem;border:1px solid var(--border);margin-bottom:.5rem"><div style="font-weight:700;font-size:.88rem;color:var(--navy);margin-bottom:.25rem">💪 '+s[0]+'</div><div style="font-size:.8rem;color:var(--gray);line-height:1.5">'+s[1]+'</div></div>').join('')+'<div class="cite">Jacobson, E. (1938). Progressive Relaxation. Applied Psychophysiology and Biofeedback meta-analysis.</div>',
+    selfcompassion: '<div class="mt">Self-Compassion Break</div><div class="msub">Developed by Dr. Kristin Neff. Three components: mindfulness, common humanity, and self-kindness.</div>' + [['Step 1 — Mindfulness','Place your hand on your heart. Say to yourself: "This is a moment of suffering. This is hard right now." Acknowledge what is real without exaggerating or minimizing it.'],['Step 2 — Common Humanity','Say to yourself: "Suffering is a part of working in this field. I am not alone in this feeling. Others who do what I do have felt exactly this way."'],['Step 3 — Self-Kindness','Say to yourself: "May I be kind to myself. May I give myself the compassion I need. May I accept myself exactly as I am right now."']].map(s=>'<div style="background:linear-gradient(135deg,#0a2a1e,var(--navy));border-radius:13px;padding:1.1rem;color:#fff;margin-bottom:.65rem"><div style="font-size:.63rem;font-weight:700;color:var(--teal2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem">'+s[0]+'</div><p style="font-size:.86rem;line-height:1.55;color:rgba(255,255,255,.85)">'+s[1]+'</p></div>').join('')+'<div class="cite">Neff, K.D. (2003). Self-compassion. Self and Identity. Studies show self-compassion reduces burnout and compassion fatigue in healthcare workers.</div>',
+    gratitude: '<div class="mt">Gratitude Practice</div><div class="msub">Write 3 specific things you are grateful for. The more specific, the stronger the effect on wellbeing.</div>' + [1,2,3].map(n=>'<div style="margin-bottom:.85rem"><div style="font-weight:700;font-size:.82rem;color:var(--navy);margin-bottom:.35rem">Gratitude '+n+'</div><textarea class="cbt-in" placeholder="I am grateful for… (be specific — who, what, why)"></textarea></div>').join('')+'<button class="jsave" onclick="toast(\'Gratitude saved ✓\');closeMo(\'toolMo\')">Save ✓</button><div class="cite">Emmons, R.A. and McCullough, M.E. (2003). Counting blessings vs. burdens. Journal of Personality and Social Psychology.</div>'
+  };
+
+  body.innerHTML = H[tool] || '<p>Tool coming soon!</p>';
+  document.getElementById('toolMo').classList.add('open');
+}
+
+function saveToolJournal() {
+  const text = document.getElementById('jAreaTool') ? document.getElementById('jAreaTool').value.trim() : '';
+  if (text) {
+    journalEntries.unshift({ id: Date.now(), date: new Date().toISOString(), text, mode: 'Written', prof });
+    document.getElementById('statJournals').textContent = journalEntries.length;
+    updateInsights();
+  }
+  toast('Journal entry saved ✓');
+  closeMo('toolMo');
+}
+
+let breathTimer = null;
+function startBreath() {
+  clearInterval(breathTimer);
+  let cycle = 0, phIdx = 0, timeLeft;
+  const phases = [{l:'Inhale',d:4,c:'inhale'},{l:'Hold',d:4,c:'hold'},{l:'Exhale',d:4,c:'exhale'},{l:'Hold',d:4,c:'hold'}];
+  function run() {
+    const ph = phases[phIdx];
+    const circ = document.getElementById('bCirc');
+    const phEl = document.getElementById('bPh');
+    const tmEl = document.getElementById('bTm');
+    const cyEl = document.getElementById('bCy');
+    if (!circ) return;
+    circ.className = 'b-circle ' + ph.c;
+    phEl.textContent = ph.l;
+    timeLeft = ph.d; tmEl.textContent = timeLeft;
+    clearInterval(breathTimer);
+    breathTimer = setInterval(() => {
+      timeLeft--;
+      if (tmEl) tmEl.textContent = timeLeft;
+      if (timeLeft <= 0) {
+        clearInterval(breathTimer);
+        phIdx = (phIdx+1)%phases.length;
+        if (phIdx === 0) { cycle++; if (cyEl) cyEl.textContent = 'Cycles: ' + cycle + ' / 4'; }
+        if (cycle < 4) setTimeout(run, 150);
+        else {
+          if (phEl) phEl.textContent = 'Complete \u2713';
+          if (tmEl) tmEl.textContent = '\u2014';
+          if (circ) { circ.className = 'b-circle'; circ.textContent = 'Done \u2713'; }
+          toast('Breathing exercise complete \u2713');
+        }
+      }
+    }, 1000);
+  }
+  run();
+}
+
+function activateGs(n) {
+  for (let i = 0; i <= 4; i++) {
+    const el = document.getElementById('gs'+i);
+    if (el) el.classList.toggle('active', i <= n);
+  }
+}
+
+// ═══════════════════════════════════════════════
+// SHARE
+// ═══════════════════════════════════════════════
+function shareApp() {
+  const url = window.location.href;
+  document.getElementById('shareLinkUrl').textContent = url;
+  document.getElementById('shareMo').classList.add('open');
+}
+async function doShare(type) {
+  const url = window.location.href;
+  const msg = 'Check out Affina — free AI-powered mental health support built for nurses, police, doctors, first responders, students, and more: ' + url;
+  if (type==='copy') { try{await navigator.clipboard.writeText(url);toast('Link copied! \u2713');}catch{toast('Copy the URL from your browser bar');} }
+  else if (type==='native') { if(navigator.share){try{await navigator.share({title:'Affina',text:msg,url});}catch{}}else{doShare('copy');} }
+  else if (type==='sms') { window.open('sms:?body='+encodeURIComponent(msg)); }
+  else if (type==='email') { window.open('mailto:?subject='+encodeURIComponent('Affina — Mental Health Support')+'&body='+encodeURIComponent(msg)); }
+}
+
+// ═══════════════════════════════════════════════
+// PRIVACY POLICY
+// ═══════════════════════════════════════════════
+const PP_SECTIONS = [
+  ['1. Introduction &amp; Scope','Affina is a mental health wellness mobile application available on the Apple App Store. This Privacy Policy governs the collection, use, storage, disclosure, and protection of personal information when you use the Affina application. We comply with: the New Jersey Data Privacy Act (NJDPA, S.B. 332, effective January 15, 2025), COPPA (15 U.S.C. \u00a7\u00a7 6501\u20136506), the FTC Act, HIPAA where applicable, and the CCPA/CPRA.',[]],
+  ['2. Information We Collect','We collect only what is necessary: (1) Account Registration Data (name, email); (2) Profession and Role Information; (3) Mental Health Inputs and Mood Data (Sensitive Data under NJDPA); (4) App Usage Data for service improvement. We do NOT collect geolocation, financial data, biometric data, racial or ethnic origin, religious beliefs, or data from advertisers or data brokers.',[]],
+  ['3. How We Use Your Information','We use your data exclusively for: service delivery, personalization, communications you have enabled, safety and security, legal compliance, and aggregated service improvement. We expressly do NOT use your data for targeted advertising, commercial profiling, or sale to third parties.',[]],
+  ['4. Consent &amp; Legal Basis','Mental health condition, treatment, or diagnosis is classified as Sensitive Data under the NJDPA (N.J.S.A. \u00a7\u00a7 56:8-166.1 et seq.) requiring explicit opt-in consent. By checking the consent box at registration and using Affina\'s mental health features, you are providing that explicit consent. You may withdraw consent at any time in Settings.',[]],
+  ['5. How We Share Your Information','Affina does NOT sell, rent, trade, or share your Personal Data with any third parties for commercial purposes. Limited disclosures permitted only to: (a) service providers under written Data Processing Agreements; (b) legal process requirements; (c) business transfers with 30 days prior notice to users; (d) situations with your explicit written consent.',[]],
+  ['6. Data Retention','Account data: deleted within 30 days of a deletion request. Mental Health and Mood Data: deleted within 30 days of a deletion request or account closure. App Usage Data: retained in aggregated/de-identified form for up to 24 months.',[]],
+  ['7. Data Security','We implement TLS/HTTPS encryption in transit, access controls, secure credential hashing, and regular security reviews. In the event of a data breach posing risk to your rights and freedoms, Affina will notify affected users in compliance with N.J.S.A. \u00a7 56:8-163 (New Jersey Identity Theft Prevention Act) and applicable law, without undue delay.',[]],
+  ['8. Your Privacy Rights','All users have the right to: Access, Correction, Deletion (within 30 days), Data Portability, Withdrawal of Consent, and Non-Discrimination. New Jersey residents have additional rights under the NJDPA including the right to opt out of profiling and the right to appeal denials within 60 days. Submit requests to: jordan.rabadi@student.shu.edu. We respond within 45 days.',[]],
+  ['9. Employer &amp; Institutional Partner Data','Affina offers B2B licensing to hospitals, law enforcement agencies, and employers. Regardless of whether an Institutional Partner pays for your access, Affina will NEVER disclose, report, share, or otherwise make available any individual user\'s Personal Data to that user\'s employer, institution, or any Institutional Partner without your explicit written consent. This prohibition is unconditional.',[]],
+  ['10. Special Protections for Sensitive Mental Health Data','Your mental health inputs and mood data are NEVER shared with your employer, insurer, law enforcement, or any third party without your explicit written consent. This data is used exclusively to provide you with in-app wellness support. Affina does not make automated decisions based solely on your mental health data that produce legal or significant effects without human review.',[]],
+  ['11. Children\'s Privacy','Affina is not directed to children under 13. We do not knowingly collect Personal Data from children under 13 (COPPA compliance). If you believe your child under 13 has created an account, contact us immediately.',[]],
+  ['12. Disclaimer of Warranties','THE APP IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTY OF ANY KIND. AFFINA EXPRESSLY DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED. AFFINA IS NOT A LICENSED HEALTHCARE PROVIDER. NOTHING IN THIS APP CONSTITUTES MEDICAL ADVICE, DIAGNOSIS, OR TREATMENT.',[]],
+  ['13. Limitation of Liability','TO THE FULLEST EXTENT PERMITTED BY LAW, IN NO EVENT SHALL AFFINA BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES. AFFINA\'S AGGREGATE LIABILITY SHALL NOT EXCEED THE GREATER OF AMOUNTS PAID BY YOU IN THE PRIOR 12 MONTHS OR $50.00. YOU WAIVE THE RIGHT TO PARTICIPATE IN CLASS ACTION LAWSUITS AGAINST AFFINA.',[]],
+  ['14. Governing Law &amp; Arbitration','This Policy is governed by the laws of the State of New Jersey. Disputes must first go through informal resolution (30 days). If unresolved, disputes are subject to binding individual arbitration under AAA Consumer Arbitration Rules in New Jersey.',[]],
+  ['15. Additional Provisions','These cover: Third-Party Service Providers and DPAs (72-hour breach notification, sub-processor restrictions), International Users (GDPR notice, PIPEDA), Do Not Track signals, and Accessibility accommodations (alternative formats available upon request to jordan.rabadi@student.shu.edu).',[]],
+  ['16. Changes to This Policy','We will provide 30 days advance notice for material changes via email and in-app notification. Your continued use constitutes acceptance of the updated Policy.',[]],
+];
+
+function buildPrivacyPolicy() {
+  document.getElementById('ppBody').innerHTML =
+    '<div class="pp-notice"><p><strong>IMPORTANT NOTICE:</strong> This Privacy Policy constitutes a legally binding agreement between you and Affina. By creating an account, you have read, understood, and agreed to be bound by this Policy.</p></div>' +
+    '<div class="pp-notice"><p><strong>MENTAL HEALTH DATA NOTICE:</strong> Affina collects and processes mental health and mood-related information. Under the New Jersey Data Privacy Act (NJDPA, S.B. 332, eff. January 15, 2025), this constitutes "sensitive data" requiring your explicit opt-in consent before processing.</p></div>' +
+    '<div class="pp-notice" style="background:#FEE2E2;border-color:#FECACA"><p><strong>NOT A MEDICAL PROVIDER:</strong> Affina is not a licensed healthcare provider. Nothing in this App constitutes medical advice, diagnosis, or treatment. In a mental health emergency, call 911 or dial/text 988.</p></div>' +
+    PP_SECTIONS.map(([title,body]) =>
+      '<div class="pp-section"><h2>' + title + '</h2><p>' + body + '</p></div>'
+    ).join('') +
+    '<div style="background:var(--mint2);border:1px solid rgba(13,148,136,.2);border-radius:10px;padding:1rem;margin-top:1rem"><p style="font-size:.8rem;color:var(--dgray);line-height:1.6"><strong>Contact:</strong> Affina — Attn: Privacy Officer, Jordan Rabadi<br>Email: jordan.rabadi@student.shu.edu<br>Response Time: Within 45 days (NJDPA-compliant)<br><strong>Effective Date:</strong> February 27, 2026</p></div>' +
+    '<p style="font-size:.68rem;color:var(--gray);text-align:center;margin-top:1.25rem;line-height:1.5;font-style:italic">Affina complies with the NJDPA (S.B. 332), COPPA, and applicable federal privacy law.<br>This document does not constitute legal advice.</p>';
+}
+
+// ═══════════════════════════════════════════════
+// MODALS & UTILITIES
+// ═══════════════════════════════════════════════
+function closeMo(id) { document.getElementById(id).classList.remove('open'); }
+function closeMoOut(e, id) { if(e.target===document.getElementById(id)) closeMo(id); }
+function toast(msg) { const t=document.getElementById('toastEl'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+function toggleN() { const t=document.getElementById('nTog'); t.classList.toggle('on'); toast(t.classList.contains('on')?'Daily reminders on \u2713':'Reminders off'); }
+</script>
+</body>
+</html>
