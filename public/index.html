@@ -371,6 +371,59 @@ a{text-decoration:none;color:inherit}
   .app-wrapper{box-shadow:0 0 60px rgba(0,0,0,.15)}
   body{background:#E8EFF5}
 }
+
+/* ── COMMUNITY ── */
+.comm-hdr{background:var(--navy);padding:2.5rem 1.25rem 1rem;color:#fff;position:relative;overflow:hidden;flex-shrink:0}
+.comm-hdr::after{content:'';position:absolute;width:180px;height:180px;background:var(--teal);border-radius:50%;top:-70px;right:-50px;filter:blur(55px);opacity:.15;pointer-events:none}
+.comm-filter-bar{padding:.5rem .85rem;background:#fff;border-bottom:1px solid var(--border);display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.comm-filter-bar::-webkit-scrollbar{display:none}
+.cf-pill{background:var(--off);border:1.5px solid var(--border);border-radius:100px;padding:.3rem .65rem;font-size:.72rem;font-weight:600;color:var(--gray);white-space:nowrap;cursor:pointer;transition:all .15s;flex-shrink:0}
+.cf-pill.active{background:var(--mint);border-color:var(--teal);color:var(--teal)}
+.comm-feed{flex:1;overflow-y:auto;padding:.75rem 1rem 5rem}
+.post-card{background:#fff;border-radius:16px;padding:1.1rem;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:.75rem;cursor:pointer;transition:all .2s}
+.post-card:hover{border-color:var(--teal);box-shadow:var(--shadow-lg)}
+.post-meta{display:flex;align-items:center;gap:.45rem;margin-bottom:.55rem;flex-wrap:wrap}
+.post-handle{font-weight:700;font-size:.8rem;color:var(--navy)}
+.post-badge{display:inline-flex;align-items:center;gap:.15rem;background:var(--mint);border-radius:100px;padding:.15rem .5rem;font-size:.63rem;font-weight:700;color:var(--teal);flex-shrink:0}
+.post-time{font-size:.67rem;color:var(--gray);margin-left:auto;flex-shrink:0}
+.post-mood-tag{display:inline-block;margin-bottom:.5rem;padding:.15rem .55rem;background:var(--mint2);border:1px solid rgba(13,148,136,.2);border-radius:100px;font-size:.63rem;font-weight:700;color:var(--teal)}
+.post-text{font-size:.86rem;color:var(--dgray);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.post-reactions{display:flex;align-items:center;gap:.75rem;margin-top:.85rem;padding-top:.65rem;border-top:1px solid var(--border)}
+.rxn-btn{display:flex;align-items:center;gap:.3rem;font-size:.78rem;color:var(--gray);cursor:pointer;transition:all .15s;padding:.2rem .4rem;border-radius:100px}
+.rxn-btn:hover,.rxn-btn.active{color:var(--teal);background:var(--mint)}
+.rxn-btn.active{font-weight:700}
+.rxn-em{font-size:.95rem}
+.comm-cmt-count{display:flex;align-items:center;gap:.25rem;font-size:.73rem;color:var(--gray);margin-left:auto}
+.comm-fab{position:absolute;bottom:1rem;right:1.1rem;width:52px;height:52px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;box-shadow:0 4px 18px rgba(13,148,136,.45);cursor:pointer;transition:all .2s;z-index:50;border:none;flex-shrink:0}
+.comm-fab:hover{background:var(--teal2);transform:scale(1.07)}
+.comm-crisis-banner{background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:.85rem;margin-top:.65rem;display:none}
+.comm-crisis-banner.show{display:block}
+.post-detail-text{font-size:.9rem;color:var(--dgray);line-height:1.65;margin-bottom:1rem}
+.rxn-bar{display:flex;gap:.55rem;padding:.85rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:.85rem}
+.rxn-full-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.6rem .3rem;border-radius:11px;border:1.5px solid var(--border);cursor:pointer;transition:all .2s;background:var(--off)}
+.rxn-full-btn:hover,.rxn-full-btn.active{border-color:var(--teal);background:var(--mint)}
+.rxn-full-em{font-size:1.25rem}
+.rxn-full-lbl{font-size:.65rem;color:var(--gray);font-weight:600}
+.rxn-full-cnt{font-size:.78rem;font-weight:700;color:var(--teal)}
+.comm-comment{background:var(--off);border-radius:12px;padding:.85rem;margin-bottom:.55rem}
+.comm-cmt-handle{font-weight:700;font-size:.78rem;color:var(--navy);margin-bottom:.2rem}
+.comm-cmt-text{font-size:.83rem;color:var(--dgray);line-height:1.5}
+.comm-cmt-time{font-size:.65rem;color:var(--gray);margin-top:.25rem}
+.comm-cmt-input-row{display:flex;gap:.5rem;align-items:flex-end;padding:.75rem 0 0;border-top:1px solid var(--border);margin-top:.5rem}
+.comm-cmt-inp{flex:1;background:var(--off);border:1.5px solid var(--border);border-radius:14px;padding:.55rem .85rem;font-size:.85rem;color:var(--navy);resize:none;max-height:80px;transition:border-color .2s;font-family:inherit}
+.comm-cmt-inp:focus{border-color:var(--teal)}
+.comm-cmt-send{width:36px;height:36px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.9rem;flex-shrink:0;cursor:pointer;transition:all .2s;border:none}
+.comm-cmt-send:hover{background:var(--teal2)}
+.composer-handle{font-size:.78rem;font-weight:700;color:var(--teal);margin-bottom:.85rem;display:flex;align-items:center;gap:.4rem;background:var(--mint2);border-radius:9px;padding:.55rem .8rem}
+.mood-tags{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 .25rem}
+.mtag{padding:.3rem .7rem;background:var(--off);border:1.5px solid var(--border);border-radius:100px;font-size:.75rem;font-weight:600;color:var(--gray);cursor:pointer;transition:all .15s}
+.mtag.sel{background:var(--mint);border-color:var(--teal);color:var(--teal)}
+.char-count{font-size:.7rem;color:var(--gray);text-align:right;margin-top:.25rem}
+.char-count.warn{color:var(--gold)}
+.char-count.over{color:var(--red)}
+.composer-submit{width:100%;padding:.9rem;background:var(--teal);color:#fff;border-radius:12px;font-weight:600;font-size:.92rem;margin-top:.65rem;transition:all .2s}
+.composer-submit:hover{background:var(--teal2)}
+.composer-submit:disabled{opacity:.45;cursor:default}
 </style>
 </head>
 <body>
@@ -682,6 +735,17 @@ a{text-decoration:none;color:inherit}
       </div>
     </div>
 
+    <!-- COMMUNITY -->
+    <div class="tab" id="tab-community" style="display:none;flex-direction:column;height:100%;overflow:hidden;position:relative">
+      <div class="comm-hdr">
+        <div class="pg-name">Peer Community</div>
+        <div style="font-size:.82rem;color:rgba(255,255,255,.5);margin-top:.2rem">Anonymous support from people who get it</div>
+      </div>
+      <div class="comm-filter-bar" id="commFilterBar"></div>
+      <div class="comm-feed" id="commFeed"></div>
+      <button class="comm-fab" onclick="openComposer()">✏️</button>
+    </div>
+
     <!-- PRIVACY POLICY -->
     <div id="tab-privacy" class="tab" style="display:none;flex-direction:column;height:100%;overflow:hidden">
       <div class="pg-hdr">
@@ -700,6 +764,7 @@ a{text-decoration:none;color:inherit}
     <div class="ni" data-t="tools" onclick="switchTab('tools',this)"><span class="ni-icon">🛠️</span><span class="ni-lbl">Tools</span></div>
     <div class="ni" data-t="chat" onclick="switchTab('chat',this)"><span class="ni-icon">💬</span><span class="ni-lbl">AI Chat</span></div>
     <div class="ni" data-t="calendar" onclick="switchTab('calendar',this)"><span class="ni-icon">📅</span><span class="ni-lbl">Journal</span></div>
+    <div class="ni" data-t="community" onclick="switchTab('community',this)"><span class="ni-icon">🫂</span><span class="ni-lbl">Community</span></div>
     <div class="ni" data-t="events" onclick="switchTab('events',this)"><span class="ni-icon">📍</span><span class="ni-lbl">Events</span></div>
     <div class="ni" data-t="profile" onclick="switchTab('profile',this)"><span class="ni-icon">👤</span><span class="ni-lbl">Profile</span></div>
   </nav>
@@ -722,6 +787,54 @@ a{text-decoration:none;color:inherit}
   <div class="share-link-box"><span class="share-link-url" id="shareLinkUrl">affina1.netlify.app</span><button class="share-copy-btn" onclick="doShare('copy')">Copy</button></div>
 </div></div></div>
 <div class="mo" id="journalViewMo" onclick="closeMoOut(event,'journalViewMo')"><div class="ms"><div class="mp"><button class="mc" onclick="closeMo('journalViewMo')">✕</button><div class="mh"></div><div id="journalViewBody"></div></div></div></div>
+
+<!-- Community: Post composer -->
+<div class="mo" id="composerMo" onclick="closeMoOut(event,'composerMo')">
+  <div class="ms"><div class="mp">
+    <button class="mc" onclick="closeMo('composerMo')">✕</button>
+    <div class="mh"></div>
+    <div class="mt">Share Anonymously</div>
+    <div class="msub" style="margin-bottom:.75rem">What you write is never linked to your name or account.</div>
+    <div class="composer-handle" id="composerHandleEl">👤 Posting as …</div>
+    <textarea id="composerText" class="journal-area" placeholder="What's on your mind? This is anonymous." style="min-height:115px" oninput="composerInput(this)" maxlength="500"></textarea>
+    <div class="char-count" id="composerCharCount">0 / 500</div>
+    <div style="font-size:.75rem;font-weight:700;color:var(--navy);margin-top:.8rem;margin-bottom:.2rem">Tag your post <span style="font-weight:400;color:var(--gray)">(optional)</span></div>
+    <div class="mood-tags" id="moodTagsEl"></div>
+    <div class="comm-crisis-banner" id="composerCrisisBanner">
+      <div style="font-weight:700;font-size:.85rem;color:#991B1B;margin-bottom:.3rem">You don't have to carry this alone.</div>
+      <div style="font-size:.78rem;color:#7F1D1D;line-height:1.55;margin-bottom:.65rem">It sounds like you might be going through something really hard. 988 is free, confidential, and available 24/7 — you don't have to be in crisis to call.</div>
+      <div style="display:flex;gap:.5rem"><a href="tel:988" style="flex:1;text-align:center;padding:.5rem;background:#991B1B;color:#fff;border-radius:8px;font-weight:600;font-size:.8rem;text-decoration:none">📞 Call 988</a><a href="sms:988" style="flex:1;text-align:center;padding:.5rem;background:#7F1D1D;color:#fff;border-radius:8px;font-weight:600;font-size:.8rem;text-decoration:none">💬 Text 988</a></div>
+    </div>
+    <button class="composer-submit" id="composerSubmitBtn" onclick="submitPost()" disabled>Post Anonymously →</button>
+  </div></div>
+</div>
+
+<!-- Community: First-visit intro -->
+<div class="mo" id="commIntroMo" onclick="closeMoOut(event,'commIntroMo')">
+  <div class="ms"><div class="mp">
+    <div class="mh"></div>
+    <div style="text-align:center;padding:.25rem 0 .5rem">
+      <div style="font-size:3rem;margin-bottom:.5rem">🫂</div>
+      <div class="mt" style="text-align:center">Welcome to Community</div>
+      <div class="msub" style="text-align:center">A safe space built for people who do your kind of work.</div>
+    </div>
+    <div style="background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:13px;padding:1rem 1.1rem;color:#fff;margin:.75rem 0">
+      <div style="font-weight:700;font-size:.88rem;margin-bottom:.3rem">🔒 Fully Anonymous</div>
+      <div style="font-size:.8rem;color:rgba(255,255,255,.7);line-height:1.55">Your name is never shown. You'll post as <span id="introHandleName" style="color:var(--teal2);font-weight:700"></span> — a randomly assigned handle only you know belongs to you.</div>
+    </div>
+    <div style="font-size:.82rem;color:var(--gray);line-height:1.55;margin-bottom:1.1rem;text-align:center">Read what others are experiencing. Share your own. React with solidarity. No judgment here.</div>
+    <button class="w-btn" style="background:var(--teal);font-size:.92rem;border-radius:13px;padding:.95rem" onclick="dismissCommIntro()">Got it — take me in →</button>
+  </div></div>
+</div>
+
+<!-- Community: Post detail -->
+<div class="mo" id="postDetailMo" onclick="closeMoOut(event,'postDetailMo')">
+  <div class="ms"><div class="mp">
+    <button class="mc" onclick="closeMo('postDetailMo')">✕</button>
+    <div class="mh"></div>
+    <div id="postDetailBody"></div>
+  </div></div>
+</div>
 
 <div class="toast" id="toastEl"></div>
 
@@ -825,13 +938,14 @@ function switchTab(name, el) {
   const tab = document.getElementById('tab-' + name);
   if (!tab) return;
   tab.classList.add('active');
-  if (name === 'chat' || name === 'privacy') tab.style.display = 'flex';
+  if (name === 'chat' || name === 'privacy' || name === 'community') tab.style.display = 'flex';
   document.querySelectorAll('.ni').forEach(n => n.classList.remove('active'));
   const navEl = el || document.querySelector(`.ni[data-t="${name}"]`);
   if (navEl) navEl.classList.add('active');
   if (name === 'calendar') buildCalendar();
   if (name === 'events') buildEvents();
   if (name === 'learn') buildLearnTab();
+  if (name === 'community') initCommunity();
 }
 
 // ═══════════════════════════════════════════════
@@ -1700,6 +1814,312 @@ function closeMo(id) { document.getElementById(id).classList.remove('open'); }
 function closeMoOut(e, id) { if(e.target===document.getElementById(id)) closeMo(id); }
 function toast(msg) { const t=document.getElementById('toastEl'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
 function toggleN() { const t=document.getElementById('nTog'); t.classList.toggle('on'); toast(t.classList.contains('on')?'Daily reminders on \u2713':'Reminders off'); }
+
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// COMMUNITY \u2014 Anonymous Peer Support
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+const COMM_ANIMALS = ['Eagle','Wolf','Hawk','Bear','Falcon','Lion','Fox','Owl','Deer','Tiger','Raven','Elk','Crane','Lynx','Puma','Drake','Robin','Stag','Wren','Finch'];
+const COMM_PROF_LABELS = {
+  nurse:'\ud83c\udfe5 Nurse', doctor:'\u2695\ufe0f Physician', police:'\ud83d\ude94 Officer', firefighter:'\ud83d\ude92 Firefighter',
+  emt:'\ud83d\ude91 EMT', socialworker:'\ud83e\udd1d Social Worker', student:'\ud83c\udf93 Student', teacher:'\ud83d\udcda Teacher',
+  military:'\ud83c\udf96\ufe0f Military', accountant:'\ud83d\udcbc Finance', therapist:'\ud83e\udde0 Therapist', other:'\u2728 Member'
+};
+const COMM_MOOD_TAGS = ['Venting','Need Support','Celebrating a Win','Question','Just Processing'];
+const CRISIS_KEYWORDS = ['want to die','cant go on','can\'t go on','end it all','end my life','kill myself','no reason to live','better off without me','give up on life','don\'t want to be here'];
+const COMM_FILTERS = [
+  {id:'mine',label:'My Profession'},{id:'all',label:'All Professions'},
+  {id:'nurse',label:'\ud83c\udfe5 Nurses'},{id:'firefighter',label:'\ud83d\ude92 Firefighters'},
+  {id:'emt',label:'\ud83d\ude91 EMT'},{id:'police',label:'\ud83d\ude94 Officers'},
+  {id:'teacher',label:'\ud83d\udcda Teachers'},{id:'military',label:'\ud83c\udf96\ufe0f Military'}
+];
+
+const SEED_POSTS = [
+  {id:'seed1',handle:'NurseEagle247',profKey:'nurse',profLabel:'\ud83c\udfe5 Nurse',text:'Third double shift this week. I genuinely love my patients but tonight I sat in my car for 20 minutes after my shift and just stared at the steering wheel. I have nothing left to give and we are still short two nurses on my floor. I don\'t know how sustainable this is.',mood:'Venting',time:Date.now()-2*3600000,reactions:{heart:14,pray:22,muscle:9},comments:[{handle:'EMTHawk156',text:'I feel this so deeply. The car sit is real \u2014 we call it decompress time. You\'re not alone.',time:Date.now()-90*60000},{handle:'NurseRaven412',text:'Short staffing is a crisis. What you\'re feeling is a rational response to an irrational situation.',time:Date.now()-45*60000}]},
+  {id:'seed2',handle:'FirefighterWolf391',profKey:'firefighter',profLabel:'\ud83d\ude92 Firefighter',text:'We had a call two weeks ago involving a kid. I\'m not going to go into it. I\'m okay but I\'m not okay. I keep replaying it. I haven\'t told anyone at the station because you just don\'t. But I needed to put it somewhere. Thanks for this.',mood:'Just Processing',time:Date.now()-5*3600000,reactions:{heart:31,pray:47,muscle:18},comments:[{handle:'EMTBear503',text:'Putting it somewhere is the first step. You don\'t have to carry it alone even if it feels that way.',time:Date.now()-4*3600000},{handle:'PoliceOwl229',text:'Same culture in our department. The code of silence is real. Writing it out helps. 988 is there if you ever need it.',time:Date.now()-3.5*3600000}]},
+  {id:'seed3',handle:'EMTHawk156',profKey:'emt',profLabel:'\ud83d\ude91 EMT',text:'Six months since I started doing the daily check-in. Six months without skipping. That might sound small but for me it\'s huge \u2014 I used to think asking myself how I was doing was a waste of time. Turns out I had a lot to say to myself.',mood:'Celebrating a Win',time:Date.now()-22*3600000,reactions:{heart:38,pray:12,muscle:29},comments:[{handle:'TeacherFalcon089',text:'This is not small at all. This is huge. Congratulations.',time:Date.now()-18*3600000}]},
+  {id:'seed4',handle:'TeacherFalcon089',profKey:'teacher',profLabel:'\ud83d\udcda Teacher',text:'One of my students disclosed something to me last week that I was required to report. I did everything right. And I still went home and cried in the shower because the system is so slow and kids get lost in it. Secondary trauma is real and nobody talks about it in education.',mood:'Just Processing',time:Date.now()-28*3600000,reactions:{heart:22,pray:33,muscle:8},comments:[{handle:'SocialworkerDeer771',text:'What you\'re describing is textbook vicarious trauma. You are not broken for feeling this. You are human.',time:Date.now()-26*3600000},{handle:'TherapistCrane304',text:'Mandatory reporting is one of the most emotionally complex parts of your job. The grief you feel means you\'re doing it right.',time:Date.now()-24*3600000}]},
+  {id:'seed5',handle:'SocialworkerDeer771',profKey:'socialworker',profLabel:'\ud83e\udd1d Social Worker',text:'Honest question for anyone in this kind of work \u2014 how do you actually leave it at the office? Because I take my caseload home in my head every single night. Last week I woke up at 3am thinking about a client\'s housing situation. It\'s not sustainable and I don\'t know what to do about it.',mood:'Question',time:Date.now()-2*86400000,reactions:{heart:19,pray:11,muscle:16},comments:[{handle:'TherapistCrane304',text:'Ritual transition helps \u2014 I walk around the block before getting in my car. Takes weeks but it starts to work.',time:Date.now()-47*3600000},{handle:'NurseEagle247',text:'I started a playlist only for the commute home. Eventually my brain associated it with "off" mode.',time:Date.now()-46*3600000}]},
+  {id:'seed6',handle:'MilitaryLion582',profKey:'military',profLabel:'\ud83c\udf96\ufe0f Military',text:'Eight months back from my third deployment. Civilian life still doesn\'t feel real sometimes. Everyone\'s stressed about things that feel so small to me and I know that\'s not fair of me but I can\'t help it. The transition briefings they give you before you get out don\'t prepare you for this part.',mood:'Just Processing',time:Date.now()-3*86400000,reactions:{heart:44,pray:38,muscle:21},comments:[{handle:'PoliceOwl229',text:'The transition out of high-stress environments is genuinely disorienting. You\'re not broken \u2014 you\'re recalibrating.',time:Date.now()-2.5*86400000}]},
+  {id:'seed7',handle:'PoliceOwl229',profKey:'police',profLabel:'\ud83d\ude94 Officer',text:'First time using the AI chat. I went in skeptical. I stayed for 45 minutes. I don\'t know if that says more about me or the app but I feel lighter than I have in a while. If you\'re on the fence about trying it \u2014 just try it.',mood:'Celebrating a Win',time:Date.now()-4*86400000,reactions:{heart:27,pray:8,muscle:34},comments:[]},
+  {id:'seed8',handle:'TherapistCrane304',profKey:'therapist',profLabel:'\ud83e\udde0 Therapist',text:'There\'s something deeply strange about being the person everyone else comes to for support and feeling like you have nowhere to go yourself. I have a supervisor. I have peer consultation. I don\'t have my own therapist right now. I know, I know. I\'m working on it.',mood:'Venting',time:Date.now()-5*86400000,reactions:{heart:52,pray:29,muscle:13},comments:[{handle:'SocialworkerDeer771',text:'The cobbler\'s children have no shoes. This is so real and so common in our field.',time:Date.now()-4.5*86400000},{handle:'NurseEagle247',text:'The fact that you named it matters. I hope you find your person soon.',time:Date.now()-4*86400000}]}
+];
+
+let commFilter = 'mine';
+let commPosts = [];
+let commReactions = {};
+let commHandle = null;
+let selectedMoodTag = null;
+
+function initCommunity() {
+  commHandle = localStorage.getItem('affina_comm_handle');
+  if (!commHandle) {
+    const p = prof || 'other';
+    const base = (COMM_PROF_LABELS[p] || '\u2728 Member').replace(/[^a-zA-Z]/g,'');
+    const animal = COMM_ANIMALS[Math.floor(Math.random()*COMM_ANIMALS.length)];
+    const num = Math.floor(Math.random()*900)+100;
+    commHandle = base + animal + num;
+    localStorage.setItem('affina_comm_handle', commHandle);
+  }
+  const stored = localStorage.getItem('affina_comm_posts');
+  const userPosts = stored ? JSON.parse(stored) : [];
+  const seedIds = new Set(SEED_POSTS.map(p=>p.id));
+  const merged = [...userPosts.filter(p=>!seedIds.has(p.id)), ...SEED_POSTS];
+  const seen = new Set();
+  commPosts = merged.filter(p=>{ if(seen.has(p.id)) return false; seen.add(p.id); return true; });
+  const rxn = localStorage.getItem('affina_comm_reactions');
+  commReactions = rxn ? JSON.parse(rxn) : {};
+  buildCommFilterBar();
+  buildCommFeed();
+  if (!localStorage.getItem('affina_comm_intro_seen')) {
+    document.getElementById('introHandleName').textContent = commHandle;
+    setTimeout(()=>document.getElementById('commIntroMo').classList.add('open'), 380);
+  }
+}
+
+function buildCommFilterBar() {
+  const bar = document.getElementById('commFilterBar');
+  if (!bar) return;
+  bar.innerHTML = '';
+  COMM_FILTERS.forEach(f=>{
+    const el = document.createElement('div');
+    el.className = 'cf-pill'+(commFilter===f.id?' active':'');
+    el.textContent = f.label;
+    el.onclick = ()=>{ commFilter=f.id; buildCommFilterBar(); buildCommFeed(); };
+    bar.appendChild(el);
+  });
+}
+
+function getFilteredPosts() {
+  const p = prof || 'other';
+  return commPosts.filter(post=>{
+    if (commFilter==='all') return true;
+    if (commFilter==='mine') return post.profKey===p;
+    return post.profKey===commFilter;
+  });
+}
+
+function timeAgo(ts) {
+  const d=Date.now()-ts, m=Math.floor(d/60000), h=Math.floor(d/3600000), dy=Math.floor(d/86400000);
+  if (m<2) return 'just now';
+  if (m<60) return m+'m ago';
+  if (h<24) return h+'h ago';
+  return dy+'d ago';
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function buildCommFeed() {
+  const feed = document.getElementById('commFeed');
+  if (!feed) return;
+  const posts = getFilteredPosts();
+  if (posts.length===0) {
+    feed.innerHTML='<div style="text-align:center;padding:3rem 1rem;color:var(--gray)"><div style="font-size:2.5rem;margin-bottom:.75rem">\ud83c\udf31</div><div style="font-weight:700;color:var(--navy);margin-bottom:.35rem">Be the first to post</div><div style="font-size:.85rem;line-height:1.5">No posts in this group yet. Tap \u270f\ufe0f to share something anonymously.</div></div>';
+    return;
+  }
+  feed.innerHTML='';
+  [...posts].sort((a,b)=>b.time-a.time).forEach(post=>{
+    const myRxn=commReactions[post.id]||{};
+    const h=post.reactions.heart+(myRxn.heart?1:0);
+    const pr=post.reactions.pray+(myRxn.pray?1:0);
+    const mu=post.reactions.muscle+(myRxn.muscle?1:0);
+    const card=document.createElement('div');
+    card.className='post-card';
+    card.innerHTML='<div class="post-meta"><span class="post-handle">'+escHtml(post.handle)+'</span><span class="post-badge">'+escHtml(post.profLabel)+'</span><span class="post-time">'+timeAgo(post.time)+'</span></div>'+(post.mood?'<div class="post-mood-tag">'+escHtml(post.mood)+'</div>':'')+'<div class="post-text">'+escHtml(post.text)+'</div><div class="post-reactions"><span class="rxn-btn'+(myRxn.heart?' active':'')+'"><span class="rxn-em">\u2764\ufe0f</span>'+h+'</span><span class="rxn-btn'+(myRxn.pray?' active':'')+'"><span class="rxn-em">\ud83d\ude4f</span>'+pr+'</span><span class="rxn-btn'+(myRxn.muscle?' active':'')+'"><span class="rxn-em">\ud83d\udcaa</span>'+mu+'</span><span class="comm-cmt-count">\ud83d\udcac '+(post.comments||[]).length+'</span></div>';
+    card.onclick=()=>openPostDetail(post.id);
+    feed.appendChild(card);
+  });
+}
+
+function openPostDetail(id) {
+  const post=commPosts.find(p=>p.id===id);
+  if (!post) return;
+  const myRxn=commReactions[id]||{};
+  const rxns=[
+    {key:'heart',em:'\u2764\ufe0f',lbl:'Relate',cnt:post.reactions.heart+(myRxn.heart?1:0)},
+    {key:'pray',em:'\ud83d\ude4f',lbl:'Support',cnt:post.reactions.pray+(myRxn.pray?1:0)},
+    {key:'muscle',em:'\ud83d\udcaa',lbl:'Strength',cnt:post.reactions.muscle+(myRxn.muscle?1:0)}
+  ];
+  const cmts=(post.comments||[]).map(c=>'<div class="comm-comment"><div class="comm-cmt-handle">'+escHtml(c.handle)+'</div><div class="comm-cmt-text">'+escHtml(c.text)+'</div><div class="comm-cmt-time">'+timeAgo(c.time)+'</div></div>').join('');
+  document.getElementById('postDetailBody').innerHTML='<div class="post-meta" style="margin-bottom:.7rem"><span class="post-handle">'+escHtml(post.handle)+'</span><span class="post-badge">'+escHtml(post.profLabel)+'</span><span class="post-time">'+timeAgo(post.time)+'</span></div>'+(post.mood?'<div class="post-mood-tag" style="margin-bottom:.7rem">'+escHtml(post.mood)+'</div>':'')+'<div class="post-detail-text">'+escHtml(post.text)+'</div><div class="rxn-bar">'+rxns.map(r=>'<div class="rxn-full-btn'+(myRxn[r.key]?' active':'')+'" onclick="toggleReaction(\''+id+'\',\''+r.key+'\')"><span class="rxn-full-em">'+r.em+'</span><span class="rxn-full-lbl">'+r.lbl+'</span><span class="rxn-full-cnt" id="rxnCnt_'+id+'_'+r.key+'">'+r.cnt+'</span></div>').join('')+'</div><div style="font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:.6rem">'+(post.comments||[]).length+' Comment'+((post.comments||[]).length!==1?'s':'')+'</div><div id="pdCmts">'+(cmts||'<div style="text-align:center;padding:1.25rem;color:var(--gray);font-size:.85rem">Be the first to reply.</div>')+'</div><div class="comm-cmt-input-row"><textarea class="comm-cmt-inp" id="postCmtInput" placeholder="Reply anonymously\u2026" rows="1"></textarea><button class="comm-cmt-send" onclick="submitComment(\''+id+'\')">\u27a4</button></div>';
+  document.getElementById('postDetailMo').classList.add('open');
+}
+
+function toggleReaction(postId, key) {
+  if (!commReactions[postId]) commReactions[postId]={};
+  commReactions[postId][key]=!commReactions[postId][key];
+  localStorage.setItem('affina_comm_reactions',JSON.stringify(commReactions));
+  const post=commPosts.find(p=>p.id===postId);
+  if (!post) return;
+  const cnt=post.reactions[key]+(commReactions[postId][key]?1:0);
+  const el=document.getElementById('rxnCnt_'+postId+'_'+key);
+  if (el) { el.textContent=cnt; el.closest('.rxn-full-btn').classList.toggle('active',commReactions[postId][key]); }
+  buildCommFeed();
+}
+
+function submitComment(postId) {
+  const inp=document.getElementById('postCmtInput');
+  if (!inp) return;
+  const text=inp.value.trim();
+  if (text.length<2) { toast('Write something first'); return; }
+  const post=commPosts.find(p=>p.id===postId);
+  if (!post) return;
+  if (!post.comments) post.comments=[];
+  post.comments.push({handle:commHandle, text, time:Date.now()});
+  saveUserPosts();
+  inp.value='';
+  openPostDetail(postId);
+  buildCommFeed();
+  toast('Reply posted \u2713');
+}
+
+function saveUserPosts() {
+  const seedIds=new Set(SEED_POSTS.map(p=>p.id));
+  localStorage.setItem('affina_comm_posts',JSON.stringify(commPosts.filter(p=>!seedIds.has(p.id))));
+}
+
+function openComposer() {
+  if (!commHandle) initCommunity();
+  selectedMoodTag=null;
+  const ta=document.getElementById('composerText');
+  if (ta) ta.value='';
+  document.getElementById('composerCharCount').textContent='0 / 500';
+  document.getElementById('composerCharCount').className='char-count';
+  document.getElementById('composerSubmitBtn').disabled=true;
+  document.getElementById('composerCrisisBanner').classList.remove('show');
+  document.getElementById('composerHandleEl').innerHTML='\ud83d\udc64 Posting as <strong>'+commHandle+'</strong>';
+  const moodEl=document.getElementById('moodTagsEl');
+  moodEl.innerHTML=COMM_MOOD_TAGS.map((tag,i)=>'<div class="mtag" id="mtag'+i+'" onclick="selectMoodTag('+i+',\''+tag+'\')">'+tag+'</div>').join('');
+  document.getElementById('composerMo').classList.add('open');
+}
+
+function selectMoodTag(idx, tag) {
+  selectedMoodTag=tag;
+  document.querySelectorAll('.mtag').forEach((el,i)=>el.classList.toggle('sel',i===idx));
+}
+
+function composerInput(el) {
+  const len=el.value.length;
+  const cc=document.getElementById('composerCharCount');
+  cc.textContent=len+' / 500';
+  cc.className='char-count'+(len>450?' warn':'')+(len>=500?' over':'');
+  document.getElementById('composerSubmitBtn').disabled=len<20;
+  const lower=el.value.toLowerCase();
+  const crisis=CRISIS_KEYWORDS.some(kw=>lower.includes(kw));
+  document.getElementById('composerCrisisBanner').classList.toggle('show',crisis);
+}
+
+function submitPost() {
+  const text=document.getElementById('composerText').value.trim();
+  if (text.length<20) { toast('Please write at least 20 characters'); return; }
+  const p=prof||'other';
+  const newPost={
+    id:'post_'+Date.now(), handle:commHandle, profKey:p,
+    profLabel:COMM_PROF_LABELS[p]||'\u2728 Member', text,
+    mood:selectedMoodTag||'', time:Date.now(),
+    reactions:{heart:0,pray:0,muscle:0}, comments:[]
+  };
+  commPosts.unshift(newPost);
+  saveUserPosts();
+  closeMo('composerMo');
+  buildCommFeed();
+  toast('Posted anonymously \u2713');
+}
+
+function dismissCommIntro() {
+  localStorage.setItem('affina_comm_intro_seen','1');
+  closeMo('commIntroMo');
+}
+
+// ═══════════════════════════════════════════════
+// DEMO MODE — for investor walkthroughs (?demo=1)
+// ═══════════════════════════════════════════════
+const DEMO_MODE = new URLSearchParams(location.search).get('demo') === '1' || location.pathname.includes('demo');
+
+const DEMO_EXTRA_POSTS = [
+  {id:'demo1',handle:'NurseRaven412',profKey:'nurse',profLabel:'🏥 Nurse',text:'Just walked out of a code where we lost a 34-year-old. Mom of two. I have to go back in and chart and pretend I\'m fine. I\'m posting this from the supply closet. Eight more hours on this shift.',mood:'Need Support',time:Date.now()-25*60000,reactions:{heart:67,pray:104,muscle:23},comments:[{handle:'NurseEagle247',text:'I\'m so sorry. Please breathe before you go back out. We see you.',time:Date.now()-18*60000},{handle:'EMTHawk156',text:'You don\'t have to be fine. You have to be present. There\'s a difference. Sending love.',time:Date.now()-12*60000},{handle:'DoctorOwl118',text:'The supply closet posts hit different. Take 5 minutes for yourself. The chart can wait.',time:Date.now()-8*60000}]},
+  {id:'demo2',handle:'EMTBear503',profKey:'emt',profLabel:'🚑 EMT',text:'Ran a peds drowning today. Kid made it. The team made it. I\'m the only one not okay tonight. Twelve years in and this one got under the wall. Glad this app exists.',mood:'Just Processing',time:Date.now()-3*3600000,reactions:{heart:89,pray:71,muscle:42},comments:[{handle:'FirefighterWolf391',text:'Peds calls hit different. There\'s no shame in that. Save means save — even if you\'re wobbly tonight.',time:Date.now()-2.5*3600000},{handle:'NurseEagle247',text:'Twelve years of holding it. You\'re allowed one night off the wall. Glad the kid made it.',time:Date.now()-2*3600000}]},
+  {id:'demo3',handle:'TeacherWren922',profKey:'teacher',profLabel:'📚 Teacher',text:'It\'s 11pm. I have 47 essays to grade. I have a parent meeting at 7am. My class size went up to 34 this year and I have three IEPs and zero aides. I love these kids. I cannot do this for thirty more years.',mood:'Venting',time:Date.now()-6*3600000,reactions:{heart:128,pray:54,muscle:39},comments:[{handle:'TeacherFalcon089',text:'34 is criminal. We need to organize. Until then, you\'re not failing — the system is.',time:Date.now()-5*3600000},{handle:'StudentFox604',text:'As a former student of a teacher like you — we noticed. We always noticed. Thank you.',time:Date.now()-4*3600000}]},
+  {id:'demo4',handle:'DoctorOwl118',profKey:'doctor',profLabel:'⚕️ Physician',text:'Forty-seven and just admitted to my partner that I think I\'ve had moral injury for fifteen years and called it "being a doctor." Reading Litz et al. tonight on my phone. I don\'t know what comes next but naming it changed something.',mood:'Just Processing',time:Date.now()-9*3600000,reactions:{heart:142,pray:88,muscle:56},comments:[{handle:'TherapistCrane304',text:'Naming it IS the something. Welcome to the part where it starts to lift.',time:Date.now()-8*3600000},{handle:'NurseEagle247',text:'Fifteen years of carrying that. You\'re a different doctor now than you were yesterday — in the best way.',time:Date.now()-6*3600000}]},
+  {id:'demo5',handle:'PoliceFalcon731',profKey:'police',profLabel:'🚔 Officer',text:'Twenty-two years on the job. I just signed up for therapy for the first time in my life. My wife cried. My partner laughed in a good way. The hardest part wasn\'t the call — it was the phone call to make the appointment.',mood:'Celebrating a Win',time:Date.now()-12*3600000,reactions:{heart:218,pray:42,muscle:167},comments:[{handle:'MilitaryLion582',text:'The phone call IS the bravery. The appointment is the easy part now.',time:Date.now()-11*3600000},{handle:'FirefighterWolf391',text:'22 years. Brother. This is huge. Proud of you.',time:Date.now()-10*3600000},{handle:'PoliceOwl229',text:'Going to text my wife about doing the same. Thank you for posting this.',time:Date.now()-9*3600000}]},
+  {id:'demo6',handle:'StudentFox604',profKey:'student',profLabel:'🎓 Student',text:'Failed my orgo midterm. Locked myself in my room for two days. My RA found this app on a flier and texted me. I\'ve been on the AI chat for an hour. I forgot I was allowed to be a person and not just a GPA.',mood:'Just Processing',time:Date.now()-15*3600000,reactions:{heart:84,pray:31,muscle:48},comments:[{handle:'TeacherFalcon089',text:'You\'re a person first. Always. Your RA sounds amazing.',time:Date.now()-13*3600000}]},
+  {id:'demo7',handle:'SocialworkerCrane217',profKey:'socialworker',profLabel:'🤝 Social Worker',text:'Had a client tell me today she felt safe with me. I came home and ate cereal for dinner standing at the counter and that one sentence was the whole reason I do this job. Some days the math works.',mood:'Celebrating a Win',time:Date.now()-19*3600000,reactions:{heart:96,pray:23,muscle:34},comments:[{handle:'TherapistCrane304',text:'The cereal-at-the-counter days are the real ones. Hold this.',time:Date.now()-17*3600000}]},
+  {id:'demo8',handle:'FirefighterDrake085',profKey:'firefighter',profLabel:'🚒 Firefighter',text:'Lost a brother to suicide last year. Our department finally hired a peer support coordinator this month. Took us losing him to get there. I don\'t know what to do with that yet but I wanted to put it somewhere.',mood:'Just Processing',time:Date.now()-26*3600000,reactions:{heart:301,pray:178,muscle:64},comments:[{handle:'PoliceFalcon731',text:'I\'m so sorry. The fact that they finally hired one means his life still saves others. That\'s not nothing.',time:Date.now()-24*3600000},{handle:'EMTBear503',text:'There are no words. I\'m just here. Reading. Witnessing.',time:Date.now()-22*3600000},{handle:'MilitaryLion582',text:'Same in our unit. We lose more to suicide than to combat. Every coordinator hired is a life saved — including the one your brother already saved by being lost.',time:Date.now()-20*3600000}]},
+  {id:'demo9',handle:'AccountantStag476',profKey:'accountant',profLabel:'💼 Finance',text:'Closing week. I haven\'t seen my kids awake in nine days. Made $340k last year and my four-year-old asked his mom if I still lived here. The math doesn\'t work anymore. Asking the partner about a step down on Monday.',mood:'Need Support',time:Date.now()-31*3600000,reactions:{heart:172,pray:88,muscle:91},comments:[{handle:'DoctorOwl118',text:'The four-year-old question. That\'s the one. Go do Monday.',time:Date.now()-29*3600000}]},
+  {id:'demo10',handle:'NurseFinch188',profKey:'nurse',profLabel:'🏥 Nurse',text:'Three weeks into using this app every day. My husband said I "seem more myself" last night. I cried in the kitchen. I forgot what myself even felt like. Whoever built this — thank you.',mood:'Celebrating a Win',time:Date.now()-2.2*86400000,reactions:{heart:267,pray:54,muscle:103},comments:[{handle:'NurseEagle247',text:'This is everything. Welcome back to you.',time:Date.now()-2*86400000}]},
+  {id:'demo11',handle:'TherapistRobin652',profKey:'therapist',profLabel:'🧠 Therapist',text:'My own therapist retired last month. I\'ve been "fine." I\'m not fine. The number of clinicians on this app posting that they don\'t have their own therapist right now should be a wake-up call to our entire field.',mood:'Question',time:Date.now()-3.5*86400000,reactions:{heart:148,pray:67,muscle:22},comments:[{handle:'TherapistCrane304',text:'Co-signed. We need to fix this. Posting in our state association group tonight.',time:Date.now()-3*86400000}]},
+  {id:'demo12',handle:'MilitaryPuma339',profKey:'military',profLabel:'🎖️ Military',text:'Three years out. Today I went to a baseball game with my kid and didn\'t scan the crowd once until the seventh inning. That\'s a win. Recording it here so I can come back and read it on a bad day.',mood:'Celebrating a Win',time:Date.now()-5*86400000,reactions:{heart:412,pray:96,muscle:218},comments:[{handle:'PoliceOwl229',text:'The seventh inning. I felt that. Honor this. Your kid will remember this game forever.',time:Date.now()-4.5*86400000},{handle:'FirefighterWolf391',text:'This is the kind of progress nobody outside this world understands. We see you.',time:Date.now()-4*86400000}]}
+];
+
+const DEMO_JOURNAL_ENTRIES = [
+  {id:Date.now()-5*86400000, date:new Date(Date.now()-5*86400000).toISOString(), text:'Long shift. Lost a patient I\'d been with for two weeks. The family hugged me on the way out. I don\'t know what to do with the weight of that yet but I\'m going to try not to carry it alone this time.', mode:'Written', prof:'nurse'},
+  {id:Date.now()-3*86400000, date:new Date(Date.now()-3*86400000).toISOString(), text:'Used the box breathing tool in my car before going home. Three rounds. The shoulder tension I\'ve been carrying for a week actually let go. Did not expect that. Going to make this a ritual.', mode:'Written', prof:'nurse'},
+  {id:Date.now()-2*86400000, date:new Date(Date.now()-2*86400000).toISOString(), text:'Talked to my partner about how heavy work has been. First time I\'ve actually said it out loud at home. He just listened. Felt like 100lbs lifted. Why did it take me 8 years to do that.', mode:'Written', prof:'nurse'},
+  {id:Date.now()-86400000, date:new Date(Date.now()-86400000).toISOString(), text:'Day off. Slept 9 hours for the first time in weeks. Made breakfast slowly. Did not check the unit text thread once. The world did not end. Note to self: this is allowed.', mode:'Written', prof:'nurse'},
+  {id:Date.now()-7200000, date:new Date(Date.now()-7200000).toISOString(), text:'Back on tonight. Going in tired but rested in a different way. Three things I\'m grateful for this morning: my coffee mug from my mom, the new charge nurse, that the sun is out.', mode:'Written', prof:'nurse'}
+];
+
+function initDemoMode() {
+  if (!DEMO_MODE) return;
+
+  // Clear any prior session state for a clean demo
+  try {
+    localStorage.removeItem('affina_comm_handle');
+    localStorage.removeItem('affina_comm_posts');
+    localStorage.removeItem('affina_comm_reactions');
+    localStorage.removeItem('affina_comm_intro_seen');
+  } catch(e) {}
+
+  // Pre-set demo user and profession
+  currentUser = { name:'Sarah Chen', email:'sarah@demo.com', createdAt:new Date().toISOString() };
+  prof = 'nurse';
+  streakCount = 12;
+  checkinCount = 14;
+  journalEntries = DEMO_JOURNAL_ENTRIES.slice();
+
+  // Pre-set anonymous community handle and skip intro
+  localStorage.setItem('affina_comm_handle', 'NurseEagle247');
+  localStorage.setItem('affina_comm_intro_seen', '1');
+
+  // Add 12 extra posts to make community look alive
+  DEMO_EXTRA_POSTS.forEach(p => {
+    if (!SEED_POSTS.find(s => s.id === p.id)) SEED_POSTS.push(p);
+  });
+
+  // Skip welcome -> auth -> profession; go straight to the app
+  goTo('s-app');
+  buildApp();
+
+  // Backfill home/profile stats and streak dots
+  setTimeout(() => {
+    document.getElementById('hBadge').textContent = '🔥 ' + streakCount + '-Day Streak';
+    document.getElementById('sNum').textContent = streakCount;
+    document.getElementById('streakMsg').textContent = 'You\'re on a roll!';
+    document.getElementById('statStreak').textContent = streakCount;
+    document.getElementById('statCheckins').textContent = checkinCount;
+    document.getElementById('statJournals').textContent = journalEntries.length;
+    const dots = document.getElementById('sDots');
+    if (dots) {
+      dots.innerHTML = '';
+      for (let i = 0; i < 7; i++) {
+        const d = document.createElement('div');
+        d.className = 'sd' + (i < 6 ? ' done' : i === 6 ? ' today' : '');
+        dots.appendChild(d);
+      }
+    }
+    if (typeof updateInsights === 'function') updateInsights();
+    if (typeof buildCalendar === 'function') buildCalendar();
+  }, 80);
+
+  // Floating "investor demo" badge
+  const badge = document.createElement('div');
+  badge.style.cssText = 'position:fixed;top:.55rem;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff;padding:.3rem .85rem;border-radius:100px;font-size:.65rem;font-weight:700;z-index:9998;letter-spacing:.08em;box-shadow:0 3px 12px rgba(0,0,0,.25);text-transform:uppercase;pointer-events:none;border:1px solid rgba(255,255,255,.4)';
+  badge.textContent = '✨ Investor Demo';
+  document.body.appendChild(badge);
+}
+
+window.addEventListener('load', initDemoMode);
 </script>
 </body>
 </html>
